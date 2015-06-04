@@ -1,5 +1,5 @@
 <div class="jumbotron">
-  <h1>Share Your Books with Your Potential Friends!</h1>
+  <h1>Share Your Books with Your Friends!</h1>
   <p class="lead">
   This website is a platform for you to share your books with others or borrow books from others.
   People love same books always have common interests .

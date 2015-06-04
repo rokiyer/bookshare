@@ -12,7 +12,7 @@ class User extends CI_Controller {
 	{	
 		$result = $this->session->userdata('user_id');
 		if(!empty($result) ){
-			redirect('space/basic');
+			redirect('space/profile');
 		}
 
 		$this->load->view('include/header');
@@ -24,7 +24,7 @@ class User extends CI_Controller {
 	{
 		$result = $this->session->userdata('user_id');
 		if(!empty($result)){
-			redirect('space/basic');
+			redirect('space/profile');
 		}
 
 		$this->load->view('include/header');
@@ -32,9 +32,12 @@ class User extends CI_Controller {
 		$this->load->view('include/footer');
 	}
 
-	public function logout(){
+	public function processLogout(){
 		$this->session->sess_destroy();
+		redirect('user/logout');
+	}
 
+	public function logout(){
 		$this->load->view('include/header');
 		$this->load->view('user/logout');
 		$this->load->view('include/footer');

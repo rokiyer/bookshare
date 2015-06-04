@@ -70,20 +70,18 @@
               break;
           }
           ?>
+          
           <li <?php if($active_class == 3) echo "class='active'";?> ><a href="<?php echo site_url();?>">Home</a></li>
-          <li <?php if($active_class == 2) echo "class='active'";?> ><a href="<?php echo site_url('books/display');?>">Books</a></li>
-          <li <?php if($active_class == 1) echo "class='active'";?> ><a href="<?php echo site_url('space/upload');?>">Share</a></li>
-          <?php if (!isLogin()) { ?>
+          <li <?php if($active_class == 2) echo "class='active'";?> ><a href="<?php echo site_url('item/display');?>">Books</a></li>
+          <li <?php if($active_class == 1) echo "class='active'";?> ><a href="<?php echo site_url('space/share');?>">Share</a></li>
+          <?php if (!isLogin() AND $this->uri->segment(2) != 'login' ) { ?>
           <li><a href="<?php echo site_url('user/login');?>">Login</a></li>
-          <?php }else{ ?>
-          <li><a href="<?php echo site_url('user/logout');?>">Logout</a></li>
+          <?php }else if( isLogin() AND $this->uri->segment(2) != 'logout'){ ?>
+          <li><a href="<?php echo site_url('user/processLogout');?>">Logout</a></li>
           <?php }?>
           
-
         </ul>
         <h3 class="muted"><a href="<?php echo site_url();?>">Book Share</a></h3>
       </div>
 
       <hr>
-
-

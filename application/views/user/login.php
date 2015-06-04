@@ -32,7 +32,7 @@
 
 <script type="text/javascript">
   var post_url = "<?php echo site_url('api/userLogin');?>";
-  var target_url = "<?php echo site_url('space/basic');?>";
+  var target_url = "<?php echo site_url('space/profile');?>";
 
   userLogin(post_url , target_url);
 </script>

@@ -1,14 +1,4 @@
-<ul class="breadcrumb">
-  <li>
-  	<?php activeButton('profile');?>
-  	<span class="divider">|</span>
-  </li>
-  <li>
-  	<?php activeButton('display');?>
-  	<span class="divider">|</span>
-  </li>
-  <li>
-  	<?php activeButton('upload');?>
-  	<span class="divider">|</span>
-  </li>
+<ul class="nav nav-tabs">
+  <li <?php if(isActive("profile")){ echo 'class="active"';}?> ><a href="<?php echo site_url("space/profile");?> ">Profile</a></li>
+  <li <?php if(isActive("share")){ echo 'class="active"';}?> ><a href="<?php echo site_url("space/share");?> ">Share</a></li>
 </ul>

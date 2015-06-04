@@ -62,5 +62,18 @@ class User_model extends CI_Model{
 		$content = file_get_contents($url);
 		return json_decode($content);
 	}
+
+
+	public function getUserInfo($user_id){
+		$query = $this->db->query("SELECT * FROM user WHERE id = $user_id");
+		$row = $query->first_row('array');
+		return $row;
+	}
+
+	public function getUserBooks($user_id){
+		$query = $this->db->query("SELECT * FROM item WHERE id = $user_id");
+		$result = $query->result('array');
+		return $result;
+	}
 }
 

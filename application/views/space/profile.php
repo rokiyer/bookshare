@@ -5,7 +5,7 @@
 		<table class="table table-striped">
 		    <tr>
 		      <td>User Name</td>
-		      <td><?=$name?></td>
+		      <td><?=$username?></td>
 		    </tr>
 		    <tr>
 		      <td>Cellphone</td>
@@ -15,14 +15,14 @@
 		      <td>E-mail</td>
 		      <td><?=$email?></td>
 		    </tr>
-		    <tr>
+		    <!-- <tr>
 		      <td>School</td>
 		      <td><?=$school?></td>
 		    </tr>
 		    <tr>
 		      <td>Student Number</td>
-		      <td><?=$stu_num?></td>
-		    </tr>
+		      <td><?=$stuno?></td>
+		    </tr> -->
 		    <tr>
 		      <td>Create Date</td>
 		      <td><?=$create_time?></td>

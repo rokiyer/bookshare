@@ -83,4 +83,48 @@ class API extends CI_Controller {
 		echoSucc('login succ');
 		return TRUE;
 	}
+
+	public function userLogout(){
+		$this->session->sess_destroy();
+		echoSucc();
+	}
+
+	public function shareBook()
+	{
+		$input = array(
+			'book_id' => $this->input->get_post('book_id') ,
+			'description' => $this->input->get_post('description') ,
+			);
+
+		if(empty($input['book_id'])){
+			echoFail('Book information is lost');
+			return FALSE;
+		}
+
+		if(empty($input['description'])){
+			echoFail('Description field is empty');
+			return FALSE;
+		}
+
+		if(isLogin() == FALSE){
+			echoFail('Have not logined yet ');
+			return FALSE;
+		}
+		$user_id = $this->session->userdata('user_id');
+
+		$this->load->model('share_model');
+		if($this->share_model->isDuplicateItem($input['book_id'] , $user_id) == TRUE){
+			echoFail('You can only upload one copy of the same book');
+			return FALSE;
+		}
+		
+		$item_id = $this->share_model->createItem( $input['book_id'] , $user_id , $input['description'] );
+
+		$output = array(
+			'result' => 1 ,
+			'item_id' => $item_id
+			);
+		echo json_encode($output);
+		return TRUE;
+	}
 }

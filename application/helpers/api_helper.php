@@ -32,3 +32,23 @@ function isLogin(){
 	return !empty($result);
 }
 
+
+function activeButton($name){
+	$CI =& get_instance();
+	if($CI->uri->segment(2) == $name){
+		echo $name;
+	}else{
+		$target_url = site_url("space/$name");
+		echo "<a href='$target_url'>$name</a>";
+	}
+}
+
+function isActive($name){
+	$CI =& get_instance();
+	return ($CI->uri->segment(2) == $name);
+}
+
+function echo_exist($var){
+	if(!empty($var) AND isset($var))
+		echo $var;
+}
