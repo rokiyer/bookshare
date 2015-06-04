@@ -26,13 +26,9 @@ function echoSucc($succ_msg)
 	echo json_encode($output);
 }
 
-function activeButton($name){
+function isLogin(){
 	$CI =& get_instance();
-	if($CI->uri->segment(2) == $name){
-		echo $name;
-	}else{
-		$target_url = site_url("space/$name");
-		echo "<a href='$target_url'>$name</a>";
-	}
+	$result = $CI->session->userdata('user_id');
+	return !empty($result);
 }
 

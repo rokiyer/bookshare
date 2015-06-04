@@ -48,6 +48,8 @@ class API extends CI_Controller {
 			return FALSE;
 		}
 
+		$this->user_model->processLogin($input['cellphone']);
+
 		echoSucc('register succ');
 		return TRUE;
 

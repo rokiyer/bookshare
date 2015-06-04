@@ -56,20 +56,30 @@
           <?php
           $active_class = 0;
           switch ($this->uri->segment(1)) {
-            case 'books':
+            case 'space':
               $active_class = 1;
               break;
-            case 'space':
+            case 'books':
               $active_class = 2;
+              break;
+            case '':
+              $active_class = 3;
               break;
             default:
               $active_class = 0;
               break;
           }
           ?>
-          <li <?php if($active_class == 0) echo "class='active'";?> ><a href="<?php echo site_url();?>">Home</a></li>
-          <li <?php if($active_class == 1) echo "class='active'";?> ><a href="<?php echo site_url('books/display');?>">Books</a></li>
-          <li <?php if($active_class == 2) echo "class='active'";?> ><a href="<?php echo site_url('space/upload');?>">Share</a></li>
+          <li <?php if($active_class == 3) echo "class='active'";?> ><a href="<?php echo site_url();?>">Home</a></li>
+          <li <?php if($active_class == 2) echo "class='active'";?> ><a href="<?php echo site_url('books/display');?>">Books</a></li>
+          <li <?php if($active_class == 1) echo "class='active'";?> ><a href="<?php echo site_url('space/upload');?>">Share</a></li>
+          <?php if (!isLogin()) { ?>
+          <li><a href="<?php echo site_url('user/login');?>">Login</a></li>
+          <?php }else{ ?>
+          <li><a href="<?php echo site_url('user/logout');?>">Logout</a></li>
+          <?php }?>
+          
+
         </ul>
         <h3 class="muted"><a href="<?php echo site_url();?>">Book Share</a></h3>
       </div>

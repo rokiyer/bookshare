@@ -37,6 +37,5 @@
 
 <script type="text/javascript">
   var post_url = "<?php echo site_url('api/userRegister');?>";
-  var target_url = "<?php echo site_url('space/basic');?>";
-  userRegister(post_url , target_url);
+  userRegister(post_url);
 </script>

@@ -9,8 +9,9 @@ class User extends CI_Controller {
 	}
 
 	public function register()
-	{
-		if(!empty($this->session->userdata('user_id')) ){
+	{	
+		$result = $this->session->userdata('user_id');
+		if(!empty($result) ){
 			redirect('space/basic');
 		}
 
@@ -21,7 +22,8 @@ class User extends CI_Controller {
 
 	public function login()
 	{
-		if(!empty($this->session->userdata('user_id')) ){
+		$result = $this->session->userdata('user_id');
+		if(!empty($result)){
 			redirect('space/basic');
 		}
 
