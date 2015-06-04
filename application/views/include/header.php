@@ -56,10 +56,10 @@
           <?php
           $active_class = 0;
           switch ($this->uri->segment(1)) {
-            case 'share':
+            case 'books':
               $active_class = 1;
               break;
-            case 'books':
+            case 'space':
               $active_class = 2;
               break;
             default:

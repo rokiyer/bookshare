@@ -26,7 +26,7 @@ class User_model extends CI_Model{
 		$query = $this->db->query("SELECT * FROM user WHERE cellphone = '$cellphone'");
 		$row = $query->first_row();
 		$user_info = array(
-			'user_id' => $row->user_id ,
+			'user_id' => $row->id ,
 			'name' => $row->name ,
 			'cellphone' => $row->name 
 			);
@@ -40,27 +40,16 @@ class User_model extends CI_Model{
 		return array(TRUE , 'register success');
 	}
 
-	public function init($fx_host)
-	{
-		if(isset($this->host_list[$fx_host]))
-		{
-			$this->fx_host = $fx_host;
-			$this->url = $this->host_list[$fx_host]['url'];
-			$this->token = $this->host_list[$fx_host]['token'];
-			return TRUE;
-		}
-		else
-		{
-			return FALSE;
-		}
+	public function getUserInfo($user_id){
+		$query = $this->db->query("SELECT * FROM user WHERE user_id = 1");
+		$row = $query->first_row('array');
+		return $row;
 	}
 
-	public function exec($method,$arr = NULL)
-	{
-		$param =($arr==NULL)?NULL:http_build_query($arr);
-		$url = $this->url.$method."?token=".$this->token."&".$param;
-		$content = file_get_contents($url);
-		return json_decode($content);
+	public function getUserBooks($user_id){
+		$query = $this->db->query("SELECT * FROM upload WHERE user_id = 1");
+		$result = $query->result('array');
+		return $result;
 	}
 }
 
