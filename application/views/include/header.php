@@ -59,7 +59,7 @@
             case 'space':
               $active_class = 1;
               break;
-            case 'books':
+            case 'item':
               $active_class = 2;
               break;
             case '':

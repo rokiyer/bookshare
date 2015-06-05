@@ -52,3 +52,22 @@ function echo_exist($var){
 	if(!empty($var) AND isset($var))
 		echo $var;
 }
+
+
+// if search does not specify limit , it will automatic add one - 50 
+function addLimit( $limit , $offset )
+{
+	if(!empty($limit))
+	{
+		$limit = ($limit < 0)?0:$limit;
+		if(!empty($offset) )
+		{
+			$offset = ($offset < 0)?0:$offset;
+			return " LIMIT $offset , $limit " ;
+		}
+		else
+			return " LIMIT 0 , $limit " ;
+	}
+	else
+		return " LIMIT 0 , 10 " ;
+}

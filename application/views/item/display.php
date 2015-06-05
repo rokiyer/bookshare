@@ -1,4 +1,20 @@
 <div class="row">
+   <div class="span6">
+    <ul class="nav nav-pills">
+      <li class=""><a href="#">Order By Time</a></li>
+      <li class=""><a href="#">Order By Name</a></li>
+    </ul>
+   </div>
+
+   <div class="span3">
+    <div class="input-append">
+      <form>
+      <input class="span2" type="text" name="keyword" value="<?php echo $search_data['keyword'];?>">
+      <button class="btn" name="submit" type="submit" >Search</button>
+      </form>
+    </div>
+   </div>
+
   <div class="span9">
   	<ul class="thumbnails">
       <?php 
@@ -7,22 +23,61 @@
         <div class="thumbnail">
           <div class="row">
             <a href="" class="span2">
-            <img  class="book_image" src="<?php echo $item['image_url'];?>" >
+            <img class="book_image" src="<?php echo $item['image_url'];?>" >
             </a>
-            <div class="span5">
-              <h4>
-                <?php 
-                echo anchor_popup(site_url('item/detail/'.$item['item_id']) , $item['title'] );
-                ?>
-              </h4>
-              <p><?php echo $item['description'];?></p>
+            <div class="span6">
+              <?php
+              $title_anchor = anchor_popup(site_url('item/detail/'.$item['item_id']) , $item['title'] );
+              $authors_anchor = array();
+              foreach ($item['authors'] as $key => $author) {
+                $author_anchor = anchor_popup(site_url('#') , $author['name']);
+                array_push($authors_anchor, $author_anchor);
+              }
+              $translators_anchor = array();
+              foreach ($item['translators'] as $key => $translator) {
+                $translator_anchor = anchor_popup(site_url('#') , $translator['name']);
+                array_push($translators_anchor, $translator_anchor);
+              }
+              $publisher_anchor = anchor_popup(site_url('#') , $item['publisher_name'] );
+              $user_anchor = anchor_popup(site_url('#') , $item['username'] );
+              
+              ?>
+              <!-- title -->
+              <h4><?php echo $title_anchor;?></h4>
+              <!-- author and translator -->
+              <p>
+              <?php
+              foreach ($authors_anchor as $key => $author_anchor) {
+                echo "<span>" . $author_anchor . "</span>";
+                if($key != count($authors_anchor) - 1 )
+                   echo " | ";
+              }
+              ?>
+              <?php 
+              if(!empty($translators_anchor)) echo " | ";
+              foreach ($translators_anchor as $key => $translator_anchor) {
+                echo "<span>" . $translator_anchor .  "(Translate)</span>";
+                if($key != count($translators_anchor) - 1 )
+                   echo " | ";
+              }
+              ?>
+              </p>
+              <!-- publihser -->
+              <p><span><?php echo $publisher_anchor;?></span> | <span><?php echo $item['pubdate'];?></span></p>
+              <!-- book owner infomation  -->
+              <p><span><?php echo $user_anchor;?></span> : <span><?php echo $item['description'];?></span></p>
             </div>
           </div>
         </div>
       </li>
       <?php }?>
-      
     </ul>
+    <div class="pagination">
+      <ul>
+      <?php foreach ($link_array as $key => $value) {echo $value;}?>
+      </ul>
+    </div>
+    
   </div>
 </div>
 
