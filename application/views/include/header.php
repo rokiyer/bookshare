@@ -59,7 +59,7 @@
             case 'space':
               $active_class = 1;
               break;
-            case 'item':
+            case 'share':
               $active_class = 2;
               break;
             case '':
@@ -72,7 +72,7 @@
           ?>
           
           <li <?php if($active_class == 3) echo "class='active'";?> ><a href="<?php echo site_url();?>">Home</a></li>
-          <li <?php if($active_class == 2) echo "class='active'";?> ><a href="<?php echo site_url('item/display');?>">Books</a></li>
+          <li <?php if($active_class == 2) echo "class='active'";?> ><a href="<?php echo site_url('share/book');?>">Books</a></li>
           <li <?php if($active_class == 1) echo "class='active'";?> ><a href="<?php echo site_url('space/share');?>">Share</a></li>
           <?php if (!isLogin() AND $this->uri->segment(2) != 'login' ) { ?>
           <li><a href="<?php echo site_url('user/login');?>">Login</a></li>
