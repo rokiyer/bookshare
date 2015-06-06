@@ -33,6 +33,20 @@ class Space extends CI_Controller {
 		$this->load->view('include/footer');
 	}
 
+	public function profile_edit()
+	{
+		$this->load->model('user_model');
+		$user_info = $this->user_model->getUserInfo($this->user_id);
+
+		$user_info['create_time'] = date("Y-m-d" , strtotime($user_info['create_time']) );
+		$user_info['user_id'] = $user_info['id'];
+
+		$this->load->view('include/header' , $user_info);
+		$this->load->view('space/nav');
+		$this->load->view('space/profile_edit');
+		$this->load->view('include/footer');
+	}
+
 	public function display()
 	{
 		$this->load->model('user_model');

@@ -166,3 +166,46 @@ function shareBook(url){
 
   }); //end of click action
 }
+
+
+
+function editProfile(url ){
+  $("#submit").click(function(event){
+    event.preventDefault(); 
+    var username = $("#username").val();
+    var cellphone = $("#cellphone").val();
+    var email = $("#email").val();
+    var data = {
+      'username' : username ,
+      'cellphone' : cellphone ,
+      'email' : email 
+    };
+
+    $.ajax({
+      type: 'post',
+      url: url ,
+      dataType : 'json' ,
+      data: data ,
+      success: function(data){
+        if(data.result == 0){
+          $("#msg-box").text(data.msg);
+          $("#msg-box").show();
+        }else if(data.result == 1){
+          $("#msg-box").removeClass("alert-error");
+          $("#msg-box").addClass("alert-success");
+          $("#msg-box").text("Profile changed success!");
+          $("#msg-box").show();
+          window.location.href=target_url;
+        }else{
+          $("#msg-box").text('connect error');
+          $("#msg-box").show();
+        }
+      }, // end of handling succ
+      error:function(e){
+        alert("connect error");
+        console.log(e);
+      }
+    }); //end of ajax
+
+  }); //end of click action
+}

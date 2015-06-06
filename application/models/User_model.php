@@ -12,6 +12,22 @@ class User_model extends CI_Model{
 			return TRUE;
 	}
 
+	public function isUsernameDuplicated($username){
+		$query = $this->db->query("SELECT * FROM user WHERE username = '$username'");
+		if($query->num_rows() == 0)
+			return FALSE;
+		else
+			return TRUE;
+	}
+
+	public function isEmailDuplicated($email){
+		$query = $this->db->query("SELECT * FROM user WHERE email = '$email'");
+		if($query->num_rows() == 0)
+			return FALSE;
+		else
+			return TRUE;
+	}
+
 	public function isCellphonePasswordMatched($input){
 		$cellphone = $input['cellphone'];
 		$password = $input['password'];
@@ -21,6 +37,7 @@ class User_model extends CI_Model{
 		else
 			return TRUE;
 	}
+
 
 	public function processLogin($cellphone){
 		$query = $this->db->query("SELECT * FROM user WHERE cellphone = '$cellphone'");
@@ -74,6 +91,12 @@ class User_model extends CI_Model{
 		$query = $this->db->query("SELECT * FROM item WHERE id = $user_id");
 		$result = $query->result('array');
 		return $result;
+	}
+
+	public function updateProfile($data , $user_id){
+		$this->db->where('id', $user_id);
+		$this->db->update('user', $data); 
+		return TRUE;
 	}
 }
 

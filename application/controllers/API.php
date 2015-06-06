@@ -127,4 +127,61 @@ class Api extends CI_Controller {
 		echo json_encode($output);
 		return TRUE;
 	}
+
+	public function editProfile()
+	{
+		$input = array(
+			'username' => $this->input->get_post('username') ,
+			'cellphone' => $this->input->get_post('cellphone') ,
+			'email' => $this->input->get_post('email') ,
+			);
+
+		if(empty($input['username'])){
+			echoFail('username is empty');
+			return FALSE;
+		}
+
+		if(empty($input['cellphone'])){
+			echoFail('cellphone is empty');
+			return FALSE;
+		}
+
+		if(empty($input['email'])){
+			echoFail('email is empty');
+			return FALSE;
+		}
+
+		$username = $input['username'];
+		$cellphone = $input['cellphone'];
+		$email = $input['email'];
+
+		$this->load->model('user_model');
+		$user_id = $this->session->userdata('user_id');
+
+		$query = $this->db->query("SELECT * FROM user WHERE cellphone = '$cellphone' AND id != $user_id ");
+		if($query->num_rows() != 0){
+			echoFail('cellphone is duplicated');
+			return FALSE;
+		}
+
+		$query = $this->db->query("SELECT * FROM user WHERE username = '$username' AND id != $user_id ");
+		if($query->num_rows() != 0){
+			echoFail('username is duplicated');
+			return FALSE;
+		}
+
+		$query = $this->db->query("SELECT * FROM user WHERE email = '$email' AND id != $user_id ");
+		if($query->num_rows() != 0){
+			echoFail('email is duplicated');
+			return FALSE;
+		}
+		
+		if($this->user_model->updateProfile($input , $user_id) == FALSE){
+			echoFail('Fail to change profile');
+			return FALSE;
+		}
+
+		echoSucc('login succ');
+		return TRUE;
+	}
 }

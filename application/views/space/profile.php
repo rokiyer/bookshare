@@ -29,8 +29,8 @@
 		    </tr>
 		</table>
 
-		<button class="btn btn-block btn-primary" type="button">Edit My Profile</button>
-		<button class="btn btn-block btn-success" type="button">Change Password</button>
+		<a class="btn btn-block btn-primary" href="<?php echo site_url('space/profile_edit');?>" type="button">Edit My Profile</a>
+		<a class="btn btn-block btn-success" href="<?php echo site_url('space/profile_pwd');?>"type="button">Change Password</a>
 
 		<button class="btn btn-block btn-danger" type="button">Delete Account</button>
 
