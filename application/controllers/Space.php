@@ -16,6 +16,7 @@ class Space extends CI_Controller {
 
 	public function index()
 	{
+		redirect('space/profile');
 		$this->load->view('welcome_message');
 	}
 
@@ -83,7 +84,7 @@ class Space extends CI_Controller {
 		$this->load->view('include/footer');
 	}
 
-	public function book()
+	public function items()
 	{
 		$offset = $this->input->get_post('offset');
 		$limit = 4;
@@ -92,6 +93,7 @@ class Space extends CI_Controller {
 		$data['title'] = "Books on sharing" ;
 		$data['search_data'] = array(
 			'keyword' => $this->input->get_post('keyword'),
+			'item_status' => array(1,2)
 		);
 
 		list( $data['total'] , $data['items']) = $this->query_model->queryItem( $data['search_data'] , $limit , $offset );
@@ -101,6 +103,8 @@ class Space extends CI_Controller {
 			$data["items"][$key]['authors'] = $this->query_model->queryBookAuthors($book_id);
 			$data["items"][$key]['translators'] = $this->query_model->queryBookTranslators($book_id);
 		}
+
+		unset($data['search_data']['item_status']);
 
 		//页码导航
 		$link_config = array(
@@ -113,19 +117,28 @@ class Space extends CI_Controller {
 		$this->load->model("pagination_model");
 		$data['link_array'] = $this->pagination_model->create_link($link_config);
 
+		$this->load->view('include/header' , $data);
+		$this->load->view('space/nav');
+		$this->load->view('space/items');
+		$this->load->view('include/footer');
+	}
+
+	public function item_edit($item_id){
+		$data = array();
+		$data['item_id'] = $item_id;
+
+		list( $total , $items ) = $this->query_model->queryItem( $data );
+		$item = $items[0];
+		$book_id = $item['book_id'];
+		$item['authors'] = $this->query_model->queryBookAuthors($book_id);
+		$item['translators'] = $this->query_model->queryBookTranslators($book_id);
+
+		$data['item'] = $item;
 
 		$this->load->view('include/header' , $data);
 		$this->load->view('space/nav');
-		$this->load->view('space/book');
+		$this->load->view('space/item_edit');
 		$this->load->view('include/footer');
 	}
 
-	public function modify()
-	{
-		$this->load->view('include/header');
-		$this->load->view('space/nav');
-		$this->load->view('space/modify');
-		$this->load->view('include/footer');
-	}
-	
 }

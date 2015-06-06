@@ -128,7 +128,7 @@ class Api extends CI_Controller {
 		return TRUE;
 	}
 
-	public function editProfile()
+	public function updateProfile()
 	{
 		$input = array(
 			'username' => $this->input->get_post('username') ,
@@ -184,4 +184,44 @@ class Api extends CI_Controller {
 		echoSucc('login succ');
 		return TRUE;
 	}
+
+	public function updateItem(){
+		$input = array(
+			'item_id' => $this->input->get_post('item_id') ,
+			'description' => $this->input->get_post('description') ,
+			'status' => $this->input->get_post('status') 
+		);
+
+		if(empty($input['item_id'])){
+			echoFail('item_id is empty');
+			return FALSE;
+		}
+
+		$this->load->model('user_model');
+		$user_id = $this->session->userdata('user_id');
+		$item_id = $input['item_id'];
+		$query = $this->db->query("SELECT * FROM item WHERE id = $item_id AND status != 3 ");
+		if($query->num_rows() == 0){
+			echoFail('item_id does not exist');
+			return FALSE;
+		}
+
+		$this->load->model('share_model');
+		$update_data = array();
+		if(!empty($input['description']) ){
+			$update_data['description'] = $input['description'];
+		}
+		if(!empty($input['status']) ){
+			$update_data['status'] = $input['status'];
+		}
+
+		if($this->share_model->updateItem($input['item_id'] , $update_data) == FALSE){
+			echoFail('Fail to update item description');
+			return FALSE;
+		}
+
+		echoSucc('update succ');
+		return TRUE;
+	}
+
 }

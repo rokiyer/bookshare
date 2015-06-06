@@ -37,6 +37,6 @@
 </div>
 
 <script type="text/javascript">
-  var post_url = "<?php echo site_url('api/editProfile');?>";
-  editProfile(post_url);
+  var post_url = "<?php echo site_url('api/updateProfile');?>";
+  updateProfile(post_url);
 </script>

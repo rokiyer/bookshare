@@ -169,7 +169,7 @@ function shareBook(url){
 
 
 
-function editProfile(url ){
+function updateProfile(url ){
   $("#submit").click(function(event){
     event.preventDefault(); 
     var username = $("#username").val();
@@ -196,6 +196,101 @@ function editProfile(url ){
           $("#msg-box").text("Profile changed success!");
           $("#msg-box").show();
           window.location.href=target_url;
+        }else{
+          $("#msg-box").text('connect error');
+          $("#msg-box").show();
+        }
+      }, // end of handling succ
+      error:function(e){
+        alert("connect error");
+        console.log(e);
+      }
+    }); //end of ajax
+
+  }); //end of click action
+}
+
+
+function updateItemDescription(url){
+  $("#submit").click(function(event){
+    event.preventDefault(); 
+    var item_id = $("#item_id").attr("item_id");
+    var description = $("#description").val();
+    var data = {
+      'item_id' : item_id ,
+      'description' : description
+    };
+
+    $.ajax({
+      type: 'post',
+      url: url ,
+      dataType : 'json' ,
+      data: data ,
+      success: function(data){
+        if(data.result == 0){
+          $("#msg-box").text(data.msg);
+          $("#msg-box").show();
+        }else if(data.result == 1){
+          $("#msg-box").removeClass("alert-error");
+          $("#msg-box").addClass("alert-success");
+          $("#msg-box").text("description changed success!");
+          $("#msg-box").show();
+          window.location.href=target_url;
+        }else{
+          $("#msg-box").text('connect error');
+          $("#msg-box").show();
+        }
+      }, // end of handling succ
+      error:function(e){
+        alert("connect error");
+        console.log(e);
+      }
+    }); //end of ajax
+
+  }); //end of click action
+}
+
+
+function updateItemStatus(url){
+  $(".item_status").click(function(event){
+    var item_id = $(this).attr("item_id");
+    var status = 0;
+    if($(this).hasClass("share")){
+      status = 1;
+    }else if($(this).hasClass("unshare")){
+      status = 2;
+    }else{
+      status = 3;
+    }
+    
+    var data = {
+      'item_id' : item_id ,
+      'status' : status
+    };
+
+    $.ajax({
+      type: 'post',
+      url: url ,
+      dataType : 'json' ,
+      data: data ,
+      success: function(data){
+        if(data.result == 0){
+          $("#msg-box").text(data.msg);
+          $("#msg-box").show();
+        }else if(data.result == 1){
+          $("#msg-box").removeClass("alert-error");
+          $("#msg-box").addClass("alert-success");
+          if(status == 1)
+            $("#msg-box").text("Share book success!");
+          else if(status == 2)
+            $("#msg-box").text("Unshare book success!");
+          else if(status == 3)
+            $("#msg-box").text("Delete book success!");
+          else
+            $("#msg-box").text("Operation unknown");
+
+          $("#msg-box").show();
+          setTimeout("self.location.reload();",1000);
         }else{
           $("#msg-box").text('connect error');
           $("#msg-box").show();

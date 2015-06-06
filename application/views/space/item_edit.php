@@ -1,24 +1,8 @@
 <div class="row">
-   <div class="span6">
-    <ul class="nav nav-pills">
-      <li class=""><a href="#">Order By Time</a></li>
-      <li class=""><a href="#">Order By Name</a></li>
-    </ul>
-   </div>
-
-   <div class="span3">
-    <div class="input-append">
-      <form>
-      <input class="span2" type="text" name="keyword" value="<?php echo $search_data['keyword'];?>">
-      <button class="btn" name="submit" type="submit" >Search</button>
-      </form>
-    </div>
-   </div>
-
-  <div class="span9">
+  <div class="span6">
+    <div class="alert alert-error hide" id="msg-box"></div>
+    
     <ul class="thumbnails">
-      <?php 
-      foreach ($items as $key => $item) { ?>
       <li class="span9">
         <div class="thumbnail">
           <div class="row">
@@ -26,6 +10,7 @@
             <img class="book_image" src="<?php echo $item['image_url'];?>" >
             <span class="label label-success share_status">Sharing</span>
             </a>
+            <span id="item_id" item_id="<?php echo $item['item_id'];?>"></span>
             <div class="span5">
               <?php
               $title_anchor = anchor_popup(site_url('item/detail/'.$item['item_id']) , $item['title'] );
@@ -41,10 +26,7 @@
               }
               $publisher_anchor = anchor_popup(site_url('#') , $item['publisher_name'] );
               $user_anchor = anchor_popup(site_url('#') , $item['username'] );
-              
               ?>
-
-
 
               <!-- title -->
               <h4><?php echo $title_anchor;?></h4>
@@ -69,33 +51,26 @@
               <!-- publihser -->
               <p><span><?php echo $publisher_anchor;?></span> | <span><?php echo $item['pubdate'];?></span></p>
               <!-- book owner infomation  -->
-              <p><span><?php echo $item['description'];?></span></p>
+              <p><textarea id="description" rows="3" class="span5"><?php echo $item['description'];?></textarea></p>
               <!-- change book -->
               <p>
-                <button class="btn btn-primary" type="button">Edit My Comment</button>
-                <button class="btn btn-warning" type="button">Unshare Book</button>
-                <button class="btn btn-danger" type="button">Delete Book</button>
+                <button class="btn btn-primary" type="button" name="submit" id="submit" value="1">Save Change</button>
+                <a class="btn" href="<?php echo site_url('space/items');?>">Back to My Books List</a>
               </p>
             </div>
-            <div class="span1">
-
-            </div>
+            <!-- end of span5  -->
           </div>
+          <!-- end of row -->
         </div>
       </li>
-      <?php }?>
     </ul>
-    <div class="pagination">
-      <ul>
-      <?php foreach ($link_array as $key => $value) {echo $value;}?>
-      </ul>
-    </div>
-    
   </div>
 </div>
 
 <script type="text/javascript">
+  var post_url = "<?php echo site_url('api/updateItem');?>";
   
+  updateItemDescription(post_url);
 </script>
 
  <style type="text/css">

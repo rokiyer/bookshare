@@ -15,12 +15,13 @@ class Share extends CI_Controller {
 
 	public function book(){
 		$offset = $this->input->get_post('offset');
-		$limit = 4;
+		$limit = 5;
 
 		$data = array();
 		$data['title'] = "Books on sharing" ;
 		$data['search_data'] = array(
 			'keyword' => $this->input->get_post('keyword'),
+			'item_status' => array(1)
 		);
 		
 		list( $data['total'] , $data['items']) = $this->query_model->queryItem( $data['search_data'] , $limit , $offset );
@@ -30,6 +31,8 @@ class Share extends CI_Controller {
 			$data["items"][$key]['authors'] = $this->query_model->queryBookAuthors($book_id);
 			$data["items"][$key]['translators'] = $this->query_model->queryBookTranslators($book_id);
 		}
+
+		unset($data['search_data']['item_status']);
 
 		//页码导航
 		$link_config = array(
