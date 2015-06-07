@@ -10,6 +10,7 @@ class Share extends CI_Controller {
 
 	public function index()
 	{
+		redirect('share/book');
 		$this->load->view('welcome_message');
 	}
 
@@ -51,10 +52,48 @@ class Share extends CI_Controller {
 		$this->load->view('include/footer');
 	}
 
-	public function detail(){
-		$this->load->view('include/header');
+	public function detail($item_id){
+		$item_id = trim($item_id);
+		if(empty($item_id))
+			redirect('share/error/1');
+
+		$query = $this->db->query("SELECT * FROM item WHERE id = $item_id AND status = 1 ");
+		if($query->num_rows() == 0){
+			redirect('share/error/2');
+		}
+
+		$data = array();
+		$data['item_id'] = $item_id;
+
+		list( $total , $items ) = $this->query_model->queryItem( $data );
+		$item = $items[0];
+		$book_id = $item['book_id'];
+		$item['authors'] = $this->query_model->queryBookAuthors($book_id);
+		$item['translators'] = $this->query_model->queryBookTranslators($book_id);
+
+		$data['item'] = $item;
+
+		$this->load->view('include/header' , $data);
 		$this->load->view('share/detail');
 		$this->load->view('include/footer');
+	}
+
+	public function error($type){
+		$data['error_msg'] = "Page not found";
+		switch ($type) {
+			case 1:
+				$data['error_msg'] = "Page not found";
+				break;
+			
+			default:
+				$data['error_msg'] = "The book does not share any more";
+				break;
+		}
+
+		$this->load->view('include/header' , $data);
+		$this->load->view('share/error');
+		$this->load->view('include/footer');
+
 	}
 
 	

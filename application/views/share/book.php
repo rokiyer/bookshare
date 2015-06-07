@@ -22,12 +22,12 @@
       <li class="span9">
         <div class="thumbnail">
           <div class="row">
-            <a href="" class="span2">
+            <a href="<?php echo $item['douban_url']; ?>" class="span2">
             <img class="book_image" src="<?php echo $item['image_url'];?>" >
             </a>
             <div class="span6">
               <?php
-              $title_anchor = anchor_popup(site_url('item/detail/'.$item['item_id']) , $item['title'] );
+              $title_anchor = anchor_popup(site_url('share/detail/'.$item['item_id']) , $item['title'] );
               $authors_anchor = array();
               foreach ($item['authors'] as $key => $author) {
                 $author_anchor = anchor_popup(site_url('#') , $author['name']);

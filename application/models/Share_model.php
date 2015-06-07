@@ -21,7 +21,7 @@ class Share_model extends CI_Model{
 
 	function updateItem($item_id , $data){
 		$this->db->where('id', $item_id);
-		$this->db->update('item', $data);
+		$this->db->set('item', $data);
 		return TRUE;
 	}
 
@@ -31,6 +31,16 @@ class Share_model extends CI_Model{
 			return FALSE;
 		else
 			return TRUE;
+	}
+
+	function createTrade($user_id , $item_id){
+		$data = array(
+           'user_id' => $user_id ,
+           'item_id' => $item_id ,
+           'status' => 1
+        );
+        $this->db->insert('trade', $data); 
+        return $this->db->insert_id();
 	}
 
 	

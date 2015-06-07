@@ -224,4 +224,49 @@ class Api extends CI_Controller {
 		return TRUE;
 	}
 
+	public function requestBorrow(){
+		$input = array(
+			'item_id' => $this->input->get_post('item_id') ,
+		);
+
+
+		if(empty($input['item_id'])){
+			echoFail('item_id is empty');
+			return FALSE;
+		}
+
+
+		$this->load->model('user_model');
+		$user_id = $this->session->userdata('user_id');
+
+		//only sharing item can be borrowed
+		$item_id = $input['item_id'];
+		$query = $this->db->query("SELECT * FROM item WHERE id = $item_id AND status = 1 ");
+		if($query->num_rows() != 1){
+			echoFail('Item is not in sharing status');
+			return FALSE;
+		}
+
+		$row = $query->first_row();
+		if($row->user_id == $user_id){
+			echoFail('Can not borrow your own book');
+			return FALSE;
+		}
+
+		//create a new trade entry in trade table
+		$this->load->model("share_model");
+		$insert_id = $this->share_model->createTrade($user_id , $item_id);
+		//change item's status
+		$this->share_model->updateItem($item_id , array('status' => 4));
+
+		if($insert_id == FALSE){
+			echoFail('Unknown error');
+			return FALSE;
+		}else{
+			echoSucc('update succ');
+			return TRUE;
+		}
+
+	}
+
 }

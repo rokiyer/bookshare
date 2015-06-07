@@ -304,3 +304,39 @@ function updateItemStatus(url){
 
   }); //end of click action
 }
+
+function requestBorrow(url){
+  $("#request").click(function(event){
+    var item_id = $("#item_id").attr("item_id");
+    
+    var data = {
+      'item_id' : item_id
+    };
+
+    $.ajax({
+      type: 'post',
+      url: url ,
+      dataType : 'json' ,
+      data: data ,
+      success: function(data){
+        if(data.result == 0){
+          $("#msg-box").text(data.msg);
+          $("#msg-box").show();
+        }else if(data.result == 1){
+          $("#msg-box").removeClass("alert-error");
+          $("#msg-box").addClass("alert-success");
+          $("#msg-box").text("Request has been sent to onwer .");
+          $("#msg-box").show();
+        }else{
+          $("#msg-box").text('connect error');
+          $("#msg-box").show();
+        }
+      }, // end of handling succ
+      error:function(e){
+        alert("connect error");
+        console.log(e);
+      }
+    }); //end of ajax
+
+  }); //end of click action
+}
