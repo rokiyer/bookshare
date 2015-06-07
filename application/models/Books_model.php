@@ -88,7 +88,7 @@ class Books_model extends CI_Model{
 		foreach ($book_info['tags'] as $key => $tag){
 			$book_info['tags'][$key] = (int)$tag;
 		}
-		array_unique($book_info['tags']);
+		$book_info['tags'] = array_unique($book_info['tags']);
 		foreach ($book_info['tags'] as $key => $tag) {
 			$tag_id = $this->createTag($tag["name"]);
 			$book_tag_arr = array( 'book_id' => $book_id , 'tag_id' => (int)$tag_id , 'count' => (int)$tag["count"] );
