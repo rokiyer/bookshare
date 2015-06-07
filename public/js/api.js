@@ -340,3 +340,53 @@ function requestBorrow(url){
 
   }); //end of click action
 }
+
+
+function updateTrade(url){
+  $(".trade_op").click(function(event){
+    var trade_id = $(this).attr("trade_id");
+    var trade_op = $(this).attr("trade_op");
+    
+    var data = {
+      'trade_id' : trade_id ,
+      'trade_op' : trade_op
+    };
+
+    $.ajax({
+      type: 'post',
+      url: url ,
+      dataType : 'json' ,
+      data: data ,
+      success: function(data){
+        if(data.result == 0){
+          $("#msg-box").text(data.msg);
+          $("#msg-box").show();
+        }else if(data.result == 1){
+          $("#msg-box").removeClass("alert-error");
+          $("#msg-box").addClass("alert-success");
+          if(trade_op == 'accept')
+            $("#msg-box").text("Accept request success!");
+          else if(trade_op == 'deny')
+            $("#msg-box").text("Deny request success!");
+          else if(trade_op == 'cancel')
+            $("#msg-box").text("Cancel request success!");
+          else if(trade_op == 'return')
+            $("#msg-box").text("Confirm the book is returned!");
+          else
+            $("#msg-box").text("Operation unknown");
+
+          $("#msg-box").show();
+          setTimeout("self.location.reload();",1000);
+        }else{
+          $("#msg-box").text('connect error');
+          $("#msg-box").show();
+        }
+      }, // end of handling succ
+      error:function(e){
+        alert("connect error");
+        console.log(e);
+      }
+    }); //end of ajax
+
+  }); //end of click action
+}

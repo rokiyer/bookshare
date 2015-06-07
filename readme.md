@@ -1,6 +1,7 @@
 #BookShare
 Another website for students in campus to share his/her books.
-demo : bookshare.rokiy.com
+
+demo : [bookshare.rokiy.com](http://bookshare.rokiy.com)
 
 ##Model 
 ####个人图书 

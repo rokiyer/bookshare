@@ -256,14 +256,86 @@ class Api extends CI_Controller {
 		//create a new trade entry in trade table
 		$this->load->model("share_model");
 		$insert_id = $this->share_model->createTrade($user_id , $item_id);
-		//change item's status
-		$this->share_model->updateItem($item_id , array('status' => 4));
+
+		echoSucc('request succ');
+		return TRUE;
+
+	}
+
+
+	public function updateTrade(){
+		$input = array(
+			'trade_id' => $this->input->get_post('trade_id') ,
+			'trade_op' => $this->input->get_post('trade_op') ,
+		);
+
+		if(empty($input['trade_id'])){
+			echoFail('trade id is empty');
+			return FALSE;
+		}
+
+		if(empty($input['trade_op'])){
+			echoFail('trade operation is empty');
+			return FALSE;
+		}
+
+		//start a request , trade_status = 1
+		//accept a request , trade_status = 2
+		//deny a request , trade_status = 3
+		//
+
+		//accept request , just change trade status is ok
+		//deny request , change trade status then , put the item status into sharing 
+		//
+		
+
+		$this->load->model('user_model');
+		$user_id = $this->session->userdata('user_id');
+		$this->load->model("share_model");
+		$current_status = $this->share_model->getTradeStatus($input['trade_id']);
+		if($current_status == 0){
+			echoFail('Trade is does not correct');
+			return FALSE;
+		}
+		switch ($input['trade_op']) {
+			case 'accept':
+				if($current_status != 1){
+					echoFail('Only inital status can be accepted');
+					return FALSE;
+				}
+				break;
+			case 'deny':
+				if($current_status != 1){
+					echoFail('Only inital status can be denied');
+					return FALSE;
+				}
+				break;
+			case 'cancel':
+				if($current_status != 1){
+					echoFail('Only inital status can be canceled');
+					return FALSE;
+				}
+				break;
+			case 'return':
+				if($current_status != 2){
+					echoFail('Only accept status can be canceled');
+					return FALSE;
+				}
+				break;
+			default:
+				echoFail('Trade operation is unknown');
+				return FALSE;
+				break;
+		}
+
+		//create a new trade entry in trade table
+		$insert_id = $this->share_model->updateTrade($input['trade_id'] , $input['trade_op']);
 
 		if($insert_id == FALSE){
 			echoFail('Unknown error');
 			return FALSE;
 		}else{
-			echoSucc('update succ');
+			echoSucc('request succ');
 			return TRUE;
 		}
 

@@ -93,7 +93,8 @@ class Space extends CI_Controller {
 		$data['title'] = "Books on sharing" ;
 		$data['search_data'] = array(
 			'keyword' => $this->input->get_post('keyword'),
-			'item_status' => array(1,2)
+			'item_status' => array(1,2) ,
+			'user_id' => $this->session->userdata['user_id']
 		);
 
 		list( $data['total'] , $data['items']) = $this->query_model->queryItem( $data['search_data'] , $limit , $offset );
@@ -112,7 +113,7 @@ class Space extends CI_Controller {
 			'offset' => $offset,
 			'limit' => $limit,
 			'search_data' => $data['search_data'] ,
-			'pre_url' => 'item/' . __FUNCTION__  ,
+			'pre_url' => 'space/' . __FUNCTION__  ,
 			);
 		$this->load->model("pagination_model");
 		$data['link_array'] = $this->pagination_model->create_link($link_config);
@@ -138,6 +139,66 @@ class Space extends CI_Controller {
 		$this->load->view('include/header' , $data);
 		$this->load->view('space/nav');
 		$this->load->view('space/item_edit');
+		$this->load->view('include/footer');
+	}
+
+	public function shared(){
+		$offset = $this->input->get_post('offset');
+		$limit = 4;
+
+		$data = array();
+		$data['title'] = "Books on sharing" ;
+		$data['search_data'] = array(
+			 // trade_status = 1 someone request , 2 accept , 3 deny , 4 cancel , 5 return ,
+			'onwer_id' => $this->session->userdata['user_id']
+		);
+
+		list( $data['total'] , $data['trades']) = $this->query_model->queryTrade( $data['search_data'] , $limit , $offset );
+
+		//页码导航
+		$link_config = array(
+			'total' => $data['total'],
+			'offset' => $offset,
+			'limit' => $limit,
+			'search_data' => $data['search_data'] ,
+			'pre_url' => 'space/' . __FUNCTION__  ,
+			);
+		$this->load->model("pagination_model");
+		$data['link_array'] = $this->pagination_model->create_link($link_config);
+
+		$this->load->view('include/header' , $data);
+		$this->load->view('space/nav');
+		$this->load->view('space/shared');
+		$this->load->view('include/footer');
+	}
+
+	public function borrow(){
+		$offset = $this->input->get_post('offset');
+		$limit = 4;
+
+		$data = array();
+		$data['title'] = "Books on sharing" ;
+		$data['search_data'] = array(
+			 // trade_status = 1 someone request , 2 accept , 3 deny , 4 cancel , 5 return ,
+			'onwer_id' => $this->session->userdata['user_id']
+		);
+
+		list( $data['total'] , $data['trades']) = $this->query_model->queryTrade( $data['search_data'] , $limit , $offset );
+
+		//页码导航
+		$link_config = array(
+			'total' => $data['total'],
+			'offset' => $offset,
+			'limit' => $limit,
+			'search_data' => $data['search_data'] ,
+			'pre_url' => 'space/' . __FUNCTION__  ,
+			);
+		$this->load->model("pagination_model");
+		$data['link_array'] = $this->pagination_model->create_link($link_config);
+
+		$this->load->view('include/header' , $data);
+		$this->load->view('space/nav');
+		$this->load->view('space/borrow');
 		$this->load->view('include/footer');
 	}
 

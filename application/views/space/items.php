@@ -28,8 +28,10 @@
               <img class="book_image" src="<?php echo $item['image_url'];?>" >
               <?php if($item['item_status'] == 1) { ?>
               <span class="label label-success share_status">Sharing</span>
-              <?php }else{ ?>
+              <?php }else if($item['item_status'] == 2){ ?>
               <span class="label label-warning share_status">Unsharing</span>
+              <?php }else if($item['item_status'] == 4){ ?>
+              <span class="label label-warning share_status">Shared</span>
               <?php } ?>
             </a>
             <div class="span5">
@@ -76,16 +78,17 @@
               <p><span><?php echo $item['description'];?></span></p>
               <!-- change book -->
               <p>
-                <a class="btn btn-primary" href="<?php echo site_url('space/item_edit/'.$item['item_id']);?>">Edit My Comment</a>
+                <?php if($item['item_status'] != 4){ //shared book can not edit?>
+                  <a class="btn btn-primary" href="<?php echo site_url('space/item_edit/'.$item['item_id']);?>">Edit My Comment</a>
 
-                <?php if($item['item_status'] == 1) { ?>
-                <button class="btn btn-warning unshare item_status" item_id="<?php echo $item['item_id'];?>" type="button">Unshare Book</button>
-                <?php }else{ ?>
-                <button class="btn btn-success share item_status" item_id="<?php echo $item['item_id'];?>" type="button">Share Book</button>
-                <?php } ?>
+                  <?php if($item['item_status'] == 1) { ?>
+                  <button class="btn btn-warning unshare item_status" item_id="<?php echo $item['item_id'];?>" type="button">Unshare Book</button>
+                  <?php }else if($item['item_status'] == 2){ ?>
+                  <button class="btn btn-success share item_status" item_id="<?php echo $item['item_id'];?>" type="button">Share Book</button>
+                  <?php } ?>
 
-                <button class="btn btn-danger delete item_status" item_id="<?php echo $item['item_id'];?>" type="button">Delete Book</button>
-                
+                  <button class="btn btn-danger delete item_status" item_id="<?php echo $item['item_id'];?>" type="button">Delete Book</button>
+                <?php }?>
               </p>
             </div>
             <div class="span1">
