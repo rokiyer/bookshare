@@ -13,29 +13,40 @@
             <div class="span6">
               <?php
               $title_anchor = anchor_popup(site_url('item/detail/'.$trade['item_id']) , $trade['item_title'] );
-              $borrower_anchor = anchor_popup(site_url('#') , $trade['borrower_name'] );
+              $owner_anchor = anchor_popup(site_url('#') , $trade['owner_name'] );
               ?>
               <!-- title -->
               <h4><?php echo $title_anchor;?></h4>
-              <!-- book owner infomation  -->
-              <p>My description :  <span><?php echo $trade['item_description'];?></span></p>
-              <p><?php echo $trade['create_time'];?> : <?php echo $borrower_anchor;?> wants to borrow this book . </p>
-              <!-- change book -->
+              <p><?php echo $owner_anchor;?> : <span><?php echo $trade['item_description'];?></span></p>
+              <p><?php echo $trade['create_time'];?> : You sent <?php echo $owner_anchor;?> a request for this book . </p>
               
               <?php if($trade['trade_status'] == 1){ //accept or deny?>
+                <p>The owner has not responsed yet , you can cancel the request .</p>
                 <p>
-                <button class="btn btn-success trade_op" trade_op="accept" trade_id="<?php echo $trade['trade_id'];?>" type="button">Accept</button>
-                <button class="btn btn-danger trade_op" trade_op="deny" trade_id="<?php echo $trade['trade_id'];?>" type="button">Deny</button>
+                <button class="btn btn-danger trade_op" trade_op="cancel" trade_id="<?php echo $trade['trade_id'];?>" type="button">Cancel</button>
                 </p>
               <?php }else if($trade['trade_status'] == 2){?>
-                <p>You have accepted <?php echo $borrower_anchor;?>'s request.</p>
-                <p>
-                <button class="btn btn-primary trade_op" trade_op="return" trade_id="<?php echo $trade['trade_id'];?>" type="button">Book is returned</button>
-                <button class="btn btn-danger trade_op" trade_op="lost" trade_id="<?php echo $trade['trade_id'];?>" type="button">Book is lost</button>
-                </p>
+                <p>The owner has agreed to lend you the book.</p>
+                <p>You can contact the owner using infomation below :</p>
+                <div class="alert alert-info">
+                  <p>Cellphone : <?php echo $trade['owner_cellphone'];?></p>
+                  <p>Email : <?php echo $trade['owner_email'];?></p>
+                </div>
               <?php }else if($trade['trade_status'] == 3){?>
-                <p>You have denied <?php echo $borrower_anchor;?>'s request.</p>
+                <p>The owner has denied your request for this book.</p>
+                <p>Sorry for that .</p>
+              <?php }else if($trade['trade_status'] == 4){?>
+                <p>You have canceled the request for this book.</p>
+              <?php }else if($trade['trade_status'] == 5){?>
+                <p>The owner has confirm the book has been returned .</p>
+                <p>Thanks for using our system.</p>
+              <?php }else if($trade['trade_status'] == 6){?>
+                <p>The owner has confirm the book has been lost .</p>
+                <p>Sorry for that .</p>
+              <?php }else{?>
+                <p>Sytem error.</p>
               <?php }?>
+
 
             </div>
             <div class="span1">

@@ -56,8 +56,13 @@
               <hr>
               <p>The book's owner is <?php echo $user_anchor;?> .<br> You can request him/her for borrowing the book.</p>
               <p>
+                <?php if(isLogin()){ ?>
+                  <?php if( $item['user_id'] != $this->session->userdata('user_id') ){ ?>
                 <button class="btn btn-primary" id="request" type="button">Request for Borrowing </button>
-                <button class="btn btn-danger" type="button">Cancel Request</button>
+                  <?php } ?>
+                <?php }else{ ?>
+                <a class="btn btn-primary" href="<?php echo site_url('user/login');?>" type="button">Request for Borrowing </a>
+                <?php } ?>
               </p>
             </div>
             <!-- end of span5  -->

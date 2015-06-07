@@ -279,16 +279,6 @@ class Api extends CI_Controller {
 			return FALSE;
 		}
 
-		//start a request , trade_status = 1
-		//accept a request , trade_status = 2
-		//deny a request , trade_status = 3
-		//
-
-		//accept request , just change trade status is ok
-		//deny request , change trade status then , put the item status into sharing 
-		//
-		
-
 		$this->load->model('user_model');
 		$user_id = $this->session->userdata('user_id');
 		$this->load->model("share_model");

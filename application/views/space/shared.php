@@ -29,12 +29,27 @@
                 </p>
               <?php }else if($trade['trade_status'] == 2){?>
                 <p>You have accepted <?php echo $borrower_anchor;?>'s request.</p>
+                <p>His/Her contact infomation is shown below : </p>
+                <div class="alert alert-info">
+                  <p>Cellphone : <?php echo $trade['borrower_cellphone'];?></p>
+                  <p>Email : <?php echo $trade['borrower_email'];?></p>
+                </div>
                 <p>
                 <button class="btn btn-primary trade_op" trade_op="return" trade_id="<?php echo $trade['trade_id'];?>" type="button">Book is returned</button>
                 <button class="btn btn-danger trade_op" trade_op="lost" trade_id="<?php echo $trade['trade_id'];?>" type="button">Book is lost</button>
                 </p>
               <?php }else if($trade['trade_status'] == 3){?>
                 <p>You have denied <?php echo $borrower_anchor;?>'s request.</p>
+              <?php }else if($trade['trade_status'] == 4){?>
+                <p>Borrower have canceled the request for this book.</p>
+              <?php }else if($trade['trade_status'] == 5){?>
+                <p>You have confirm the book has been returned.</p>
+                <p>Thanks for using our system.</p>
+              <?php }else if($trade['trade_status'] == 6){?>
+                <p>You have confirm the book has been lost.</p>
+                <p>Sorry for that .</p>
+              <?php }else{?>
+                <p>Sytem error.</p>
               <?php }?>
 
             </div>

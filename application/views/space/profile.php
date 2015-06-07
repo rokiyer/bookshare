@@ -38,7 +38,22 @@
 	</div> 
 	<!-- end of span -->
 
-	<div class="span4">
+	<div class="span5">
+		<?php if( substr($username , 0 , 4) == 'User' ){ ?>
+		<div class="alert alert-block">
+		  <button type="button" class="close" data-dismiss="alert">&times;</button>
+		  <h4>Warning!</h4>
+		  Please change your default username .
+		</div>
+		<?php }?>
+
+		<?php if( empty($email) ){ ?>
+		<div class="alert alert-block">
+		  <button type="button" class="close" data-dismiss="alert">&times;</button>
+		  <h4>Warning!</h4>
+		  Please set up your Email address .
+		</div>
+		<?php }?>
 	</div> 
 
 </div>

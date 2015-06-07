@@ -53,34 +53,23 @@
     <div class="container-narrow">
       <div class="masthead">
         <ul class="nav nav-pills pull-right">
-          <?php
-          $active_class = 0;
-          switch ($this->uri->segment(1)) {
-            case 'space':
-              $active_class = 1;
-              break;
-            case 'share':
-              $active_class = 2;
-              break;
-            case '':
-              $active_class = 3;
-              break;
-            default:
-              $active_class = 0;
-              break;
-          }
-          ?>
           
-          <li <?php if($active_class == 3) echo "class='active'";?> ><a href="<?php echo site_url();?>">Home</a></li>
-          <li <?php if($active_class == 2) echo "class='active'";?> ><a href="<?php echo site_url('share/book');?>">Books</a></li>
+          <li <?php if($this->uri->segment(1) == '') echo "class='active'";?> ><a href="<?php echo site_url();?>">Home</a></li>
+          <li <?php if($this->uri->segment(1) == 'share') echo "class='active'";?> ><a href="<?php echo site_url('share/book');?>">Books</a></li>
           <li><a href="">|</a></li>
-          <li <?php if($active_class == 1) echo "class='active'";?> ><a href="<?php echo site_url('space');?>">My Space</a></li>
-          <?php if (!isLogin() AND $this->uri->segment(2) != 'login' ) { ?>
-          <li><a href="<?php echo site_url('user/login');?>">Login</a></li>
-          <?php }else if( isLogin() AND $this->uri->segment(2) != 'logout'){ ?>
-          <li><a href="<?php echo site_url('user/processLogout');?>">Logout</a></li>
+          <li <?php if($this->uri->segment(1) == 'space') echo "class='active'";?> ><a href="<?php echo site_url('space');?>">My Space</a></li>
+
+          <?php if (isLogin()){ ?>
+            <?php if ($this->uri->segment(2) != 'logout'){ ?>
+             <li><a href="<?php echo site_url('user/processLogout');?>">Logout</a></li>
+            <?php }?>
+          <?php }else{ ?>
+            <?php if ($this->uri->segment(2) == 'login'){ ?>
+             <li><a href="<?php echo site_url('user/register');?>">Register</a></li>
+            <?php }else{ ?>
+             <li><a href="<?php echo site_url('user/login');?>">Login</a></li>
+            <?php } ?>
           <?php }?>
-          
         </ul>
         <h3 class="muted"><a href="<?php echo site_url();?>">Book Share</a></h3>
       </div>

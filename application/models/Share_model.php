@@ -16,6 +16,7 @@ class Share_model extends CI_Model{
 	// 3 - denied 
 	// 4 - canceled
 	// 5 - returned 
+	// 6 - lost
 
 	function createItem($book_id , $user_id , $description){
 		$insert_arr = array(

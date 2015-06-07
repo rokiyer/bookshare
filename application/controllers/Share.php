@@ -35,7 +35,6 @@ class Share extends CI_Controller {
 
 		unset($data['search_data']['item_status']);
 
-		//页码导航
 		$link_config = array(
 			'total' => $data['total'],
 			'offset' => $offset,
@@ -57,21 +56,18 @@ class Share extends CI_Controller {
 		if(empty($item_id))
 			redirect('share/error/1');
 
-		$query = $this->db->query("SELECT * FROM item WHERE id = $item_id AND status = 1 ");
+		$query = $this->db->query("SELECT * FROM item_view WHERE item_id = $item_id AND item_status = 1 ");
 		if($query->num_rows() == 0){
 			redirect('share/error/2');
 		}
+		$row = $query->first_row('array');
 
 		$data = array();
-		$data['item_id'] = $item_id;
-
-		list( $total , $items ) = $this->query_model->queryItem( $data );
-		$item = $items[0];
-		$book_id = $item['book_id'];
-		$item['authors'] = $this->query_model->queryBookAuthors($book_id);
-		$item['translators'] = $this->query_model->queryBookTranslators($book_id);
-
-		$data['item'] = $item;
+		$data['item'] = $row;
+		
+		$book_id = $data['item']['book_id'];
+		$data['item']['authors'] = $this->query_model->queryBookAuthors($book_id);
+		$data['item']['translators'] = $this->query_model->queryBookTranslators($book_id);
 
 		$this->load->view('include/header' , $data);
 		$this->load->view('share/detail');

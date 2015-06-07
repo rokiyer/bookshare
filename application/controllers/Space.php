@@ -150,7 +150,7 @@ class Space extends CI_Controller {
 		$data['title'] = "Books on sharing" ;
 		$data['search_data'] = array(
 			 // trade_status = 1 someone request , 2 accept , 3 deny , 4 cancel , 5 return ,
-			'onwer_id' => $this->session->userdata['user_id']
+			'owner_id' => $this->session->userdata['user_id']
 		);
 
 		list( $data['total'] , $data['trades']) = $this->query_model->queryTrade( $data['search_data'] , $limit , $offset );
@@ -180,7 +180,7 @@ class Space extends CI_Controller {
 		$data['title'] = "Books on sharing" ;
 		$data['search_data'] = array(
 			 // trade_status = 1 someone request , 2 accept , 3 deny , 4 cancel , 5 return ,
-			'onwer_id' => $this->session->userdata['user_id']
+			'borrower_id' => $this->session->userdata['user_id']
 		);
 
 		list( $data['total'] , $data['trades']) = $this->query_model->queryTrade( $data['search_data'] , $limit , $offset );

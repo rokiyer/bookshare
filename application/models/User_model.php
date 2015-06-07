@@ -51,9 +51,16 @@ class User_model extends CI_Model{
 	}
 
 	public function create($input){
+		$query_user_max_id = $this->db->query("SELECT MAX(id) AS max_id FROM user WHERE 1");
+		if($query_user_max_id->num_rows() == 0)
+			$cnt = 1;
+		$row_user_max_id = $query_user_max_id->first_row();
+		$cnt = $row_user_max_id->max_id+1;
+
+		$username = 'User' . $cnt ;
 		$cellphone = $input['cellphone'];
 		$password = $input['password'];
-		$query = $this->db->query("INSERT INTO user(username,cellphone,password) VALUE ( '$cellphone' , '$cellphone' , SHA1('$password') )");
+		$query = $this->db->query("INSERT INTO user(username,cellphone,password) VALUE ( '$username' , '$cellphone' , SHA1('$password') )");
 		return array(TRUE , 'register success');
 	}
 
