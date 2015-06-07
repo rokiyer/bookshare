@@ -85,9 +85,13 @@ class Books_model extends CI_Model{
 			$book_author_arr = array( 'book_id' => $book_id , 'author_id' => $author_id );
 			$this->db->insert('book_translator' , $book_author_arr);
 		}
+		foreach ($book_info['tags'] as $key => $tag){
+			$book_info['tags'][$key] = (int)$tag;
+		}
+		array_unique($book_info['tags']);
 		foreach ($book_info['tags'] as $key => $tag) {
 			$tag_id = $this->createTag($tag["name"]);
-			$book_tag_arr = array( 'book_id' => $book_id , 'tag_id' => $tag_id , 'count' => $tag["count"] );
+			$book_tag_arr = array( 'book_id' => $book_id , 'tag_id' => (int)$tag_id , 'count' => (int)$tag["count"] );
 			$this->db->insert('book_tag' , $book_tag_arr);
 		}
 		
