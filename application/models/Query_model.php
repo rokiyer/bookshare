@@ -13,10 +13,52 @@ class Query_model extends CI_Model{
 		$item_id = isset($search_data['item_id'])?$search_data['item_id']:NULL;
 		$item_status = isset($search_data['item_status'])?$search_data['item_status']:NULL;
 		$user_id = isset($search_data['user_id'])?$search_data['user_id']:NULL;
+		$author_id = isset($search_data['author_id'])?$search_data['author_id']:NULL;
+		$book_ids = isset($search_data['book_ids'])?$search_data['book_ids']:NULL;
 
-
-		$sql = "SELECT * FROM item_view
+		$sql = "SELECT * FROM item_view 
 			WHERE 1 ";
+
+		if($item_status != NULL){
+			$sql .= "AND item_view.item_status IN (" . implode(',', $item_status) . ") ";
+		}
+		else
+			$sql .= "AND item_view.item_status != 3 ";
+
+		if($book_ids != NULL){
+			$sql .= "AND item_view.book_id IN (" . implode(',', $book_ids) . ") ";
+		}
+
+		if($keyword != NULL)
+			$sql .= "AND book.title LIKE '%$keyword%' ";
+		
+		if($item_id != NULL)
+			$sql .= "AND item_view.item_id = $item_id ";
+
+		if($user_id != NULL)
+			$sql .= "AND item_view.user_id = $user_id ";
+
+		
+
+		$query_total = $this->db->query($sql);
+		$total = $query_total->num_rows();
+
+		$sql .= " ORDER BY create_time DESC";
+		$sql .= addLimit( $limit , $offset );
+		
+
+		$query_search = $this->db->query($sql);
+		$result_search = $query_search->result_array();
+
+		return array($total , $result_search);
+	}
+
+	function queryAuthor($search_data , $limit = NULL, $offset = NULL ){
+
+		$author_id = isset($search_data['author_id'])?$search_data['author_id']:NULL;
+
+		$sql = "SELECT SELECT book_id FROM book_author 
+			WHERE author_id = $author_id ";
 
 		if($item_status != NULL){
 			$sql .= "AND item_view.item_status IN (" . implode(',', $item_status) . ") ";
@@ -32,6 +74,9 @@ class Query_model extends CI_Model{
 
 		if($user_id != NULL)
 			$sql .= "AND item_view.user_id = $user_id ";
+
+		if($author_id != NULL)
+			$sql .= "AND item_view.author_id = $author_id ";
 
 		$query_total = $this->db->query($sql);
 		$total = $query_total->num_rows();

@@ -54,7 +54,7 @@
               <p><?php echo $user_anchor;?>  : <?php echo $item['description'];?></p>
               <!-- change book -->
               <hr>
-              <p>The book's owner is <?php echo $user_anchor;?> .<br> You can request him/her for borrowing the book.</p>
+              <p>This book's owner is <?php echo $user_anchor;?> .<br> You can request him/her for borrowing this book.</p>
               <p>
                 <?php if(isLogin()){ ?>
                   <?php if( $item['user_id'] != $this->session->userdata('user_id') ){ ?>

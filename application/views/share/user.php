@@ -1,19 +1,12 @@
 <div class="row">
-   <div class="span6">
-    <ul class="nav nav-pills">
-      <li class=""><a href="#">Order By Time</a></li>
-      <li class=""><a href="#">Order By Name</a></li>
-    </ul>
-   </div>
-
-   <div class="span3">
-    <div class="input-append">
-      <form>
-      <input class="span2" type="text" name="keyword" value="<?php echo $search_data['keyword'];?>">
-      <button class="btn" name="submit" type="submit" >Search</button>
-      </form>
+   <div class="span9">
+    <div class="alert alert-info">
+      All the books of this page are owned by <b><?php echo anchor('share/user/' . $user['id'] , $user['username']);?></b> 
+      , you can contact once and borrow multiple books .
     </div>
    </div>
+
+  <hr>
 
   <div class="span9">
   	<ul class="thumbnails">
@@ -30,7 +23,7 @@
               $title_anchor = anchor_popup(site_url('share/detail/'.$item['item_id']) , $item['title'] );
               $authors_anchor = array();
               foreach ($item['authors'] as $key => $author) {
-                $author_anchor = anchor_popup(site_url('share/author?author_id='.$author['author_id']) , $author['name']);
+                $author_anchor = anchor_popup(site_url('#') , $author['name']);
                 array_push($authors_anchor, $author_anchor);
               }
               $translators_anchor = array();
