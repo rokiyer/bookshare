@@ -56,14 +56,14 @@
               <?php 
               if(!empty($translators_anchor)) echo " | ";
               foreach ($translators_anchor as $key => $translator_anchor) {
-                echo "<span>" . $translator_anchor .  "(Translate)</span>";
+                echo "<span>*" . $translator_anchor .  "</span>";
                 if($key != count($translators_anchor) - 1 )
                    echo " | ";
               }
               ?>
               </p>
               <!-- publihser -->
-              <p><span><?php echo $publisher_anchor;?></span> | <span><?php echo $item['pubdate'];?></span></p>
+              <p><span><?php echo $publisher_anchor;?></span> <span><?php echo $item['pubdate'];?></span></p>
               <!-- book owner infomation  -->
               <p><span><?php echo $user_anchor;?></span> : <span><?php echo $item['description'];?></span></p>
             </div>

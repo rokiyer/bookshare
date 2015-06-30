@@ -14,6 +14,7 @@ class Query_model extends CI_Model{
 		$item_status = isset($search_data['item_status'])?$search_data['item_status']:NULL;
 		$user_id = isset($search_data['user_id'])?$search_data['user_id']:NULL;
 		$author_id = isset($search_data['author_id'])?$search_data['author_id']:NULL;
+		$publisher_id = isset($search_data['publisher_id'])?$search_data['publisher_id']:NULL;
 		$book_ids = isset($search_data['book_ids'])?$search_data['book_ids']:NULL;
 
 		$sql = "SELECT * FROM item_view 
@@ -37,6 +38,9 @@ class Query_model extends CI_Model{
 
 		if($user_id != NULL)
 			$sql .= "AND item_view.user_id = $user_id ";
+
+		if($publisher_id != NULL)
+			$sql .= "AND item_view.publisher_id = $publisher_id ";
 
 		
 

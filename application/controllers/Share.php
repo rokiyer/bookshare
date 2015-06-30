@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Share extends CI_Controller {
 
+	private $limit = 4;
+
 	function __construct(){
 		parent::__construct();
 		$this->load->model("share_model");
@@ -94,10 +96,11 @@ class Share extends CI_Controller {
 		}
 
 		$data = array();
+		$data['page'] = __FUNCTION__ ;
 		$data['user'] = $query_user->first_row('array');
 
 		$offset = $this->input->get_post('offset');
-		$limit = 4;
+		$limit = $this->limit;
 		
 		$data['title'] = "Books on sharing" ;
 		$data['search_data'] = array(
@@ -127,7 +130,7 @@ class Share extends CI_Controller {
 
 
 		$this->load->view('include/header' , $data);
-		$this->load->view('share/user');
+		$this->load->view('share/list');
 		$this->load->view('include/footer');
 	}
 
@@ -148,11 +151,14 @@ class Share extends CI_Controller {
 		}
 
 		$data = array();
+		$data['page'] = __FUNCTION__ ;
 		$data['author'] = $query_author->first_row('array');
 
 		$offset = $this->input->get_post('offset');
-		$limit = 4;
+		$limit = $this->limit;
 
+		//find books wrote by the author
+		//queryItem function is hard to combine the two tables , so get book_ids and select items
 		$query_book_ids = $this->db->query("SELECT book_id FROM book_author WHERE author_id = $author_id");
 		$result_book_ids = $query_book_ids->result_array();
 		$arr_book_ids = array();
@@ -165,6 +171,63 @@ class Share extends CI_Controller {
 			'item_status' => array(1) ,
 			'author_id' => $author_id ,
 			'book_ids' => $arr_book_ids
+		);
+		
+		list( $data['total'] , $data['items']) = $this->query_model->queryItem( $data['search_data'] , $limit , $offset );
+
+		foreach ($data["items"] as $key => $item) {
+			$book_id = $item['book_id'];
+			$data["items"][$key]['authors'] = $this->query_model->queryBookAuthors($book_id);
+			$data["items"][$key]['translators'] = $this->query_model->queryBookTranslators($book_id);
+		}
+
+		unset($data['search_data']['item_status']);
+		unset($data['search_data']['book_ids']);
+
+		$link_config = array(
+			'total' => $data['total'],
+			'offset' => $offset,
+			'limit' => $limit,
+			'search_data' => $data['search_data'] ,
+			'pre_url' => 'share/' . __FUNCTION__  ,
+			);
+		$this->load->model("pagination_model");
+		$data['link_array'] = $this->pagination_model->create_link($link_config);
+
+
+		$this->load->view('include/header' , $data);
+		$this->load->view('share/list');
+		$this->load->view('include/footer');
+	}
+
+	public function publisher(){
+		$publisher_id = $this->input->get_post("publisher_id");
+
+		$publisher_id = trim($publisher_id);
+		if(empty($publisher_id)){
+			redirect('share/error/1');
+			return FALSE;
+		}
+
+		$query_publisher = $this->db->query("SELECT * FROM publisher WHERE id=$publisher_id");
+		$num_rows_publisher = $query_publisher->num_rows();
+		if($num_rows_publisher == 0){
+			redirect('share/error/1');
+			return FALSE;
+		}
+
+		$data = array();
+		$data['page'] = __FUNCTION__ ;
+		$data['publisher'] = $query_publisher->first_row('array');
+
+		$offset = $this->input->get_post('offset');
+		$limit = $this->limit;
+
+
+		$data['title'] = "Books on sharing" ;
+		$data['search_data'] = array(
+			'item_status' => array(1) ,
+			'publisher_id' => $publisher_id 
 		);
 		
 		list( $data['total'] , $data['items']) = $this->query_model->queryItem( $data['search_data'] , $limit , $offset );
@@ -189,7 +252,7 @@ class Share extends CI_Controller {
 
 
 		$this->load->view('include/header' , $data);
-		$this->load->view('share/user');
+		$this->load->view('share/list');
 		$this->load->view('include/footer');
 	}
 

@@ -1,8 +1,14 @@
 <div class="row">
    <div class="span9">
     <div class="alert alert-info">
-      All the books of this page are owned by <b><?php echo anchor('share/user/' . $user['id'] , $user['username']);?></b> 
-      , you can contact once and borrow multiple books .
+      <?php if($page == 'user'){ ?>
+        The books in this page are owned by <b><?php echo anchor('share/user/' . $user['id'] , $user['username']);?></b> 
+      , you can borrow multiple books from him/her.
+      <?php }else if($page == 'author'){ ?>
+        The books in this page are wrote by <b><?php echo anchor('share/author?author_id=' . $author['id'] , $author['name']);?></b> 
+      <?php }else if($page == 'publisher'){ ?>
+        The books in this page are published by <b><?php echo anchor('share/publisher?publisher_id=' . $publisher['id'] , $publisher['name']);?></b> 
+      <?php } ?>
     </div>
    </div>
 
@@ -23,17 +29,16 @@
               $title_anchor = anchor_popup(site_url('share/detail/'.$item['item_id']) , $item['title'] );
               $authors_anchor = array();
               foreach ($item['authors'] as $key => $author) {
-                $author_anchor = anchor_popup(site_url('#') , $author['name']);
+                $author_anchor = anchor_popup( site_url('share/author?author_id=' . $author['author_id']) , $author['name'] );
                 array_push($authors_anchor, $author_anchor);
               }
               $translators_anchor = array();
               foreach ($item['translators'] as $key => $translator) {
-                $translator_anchor = anchor_popup(site_url('#') , $translator['name']);
+                $translator_anchor = anchor_popup(site_url( 'share/author?author_id=' . $translator['translator_id'] ), $translator['name'] );
                 array_push($translators_anchor, $translator_anchor);
               }
-              $publisher_anchor = anchor_popup(site_url('#') , $item['publisher_name'] );
+              $publisher_anchor = anchor_popup(site_url('share/publisher?publisher_id=' . $item['publisher_id'] ), $item['publisher_name'] );
               $user_anchor = anchor_popup(site_url('share/user?user_id='.$item['user_id']) , $item['username'] );
-              
               ?>
               <!-- title -->
               <h4><?php echo $title_anchor;?></h4>
