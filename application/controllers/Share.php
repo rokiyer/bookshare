@@ -67,9 +67,16 @@ class Share extends CI_Controller {
 			redirect('share/error/1');
 			return FALSE;
 		}
-			
 
-		$query = $this->db->query("SELECT * FROM item_view WHERE item_id = $item_id AND item_status = 1 ");
+		$display = $this->input->get_post('display');
+
+		if($display == 1){
+			$sql = "SELECT * FROM item_view WHERE item_id = $item_id";
+		}else{
+			$sql = "SELECT * FROM item_view WHERE item_id = $item_id AND item_status = 1 ";
+		}
+
+		$query = $this->db->query($sql);
 		if($query->num_rows() == 0){
 			redirect('share/error/2');
 		}

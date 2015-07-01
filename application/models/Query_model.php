@@ -171,6 +171,11 @@ class Query_model extends CI_Model{
 		return array($total , $result_search);
 	}
 
+	function queryTradeRecord($trade_id){
+		$query = $this->db->query("SELECT * FROM trade_record WHERE trade_id = $trade_id");
+		return $query->result('array');
+	}
+
 	
 }
 

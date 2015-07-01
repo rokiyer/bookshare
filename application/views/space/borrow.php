@@ -12,14 +12,33 @@
             </a>
             <div class="span6">
               <?php
-              $title_anchor = anchor_popup(site_url('item/detail/'.$trade['item_id']) , $trade['item_title'] );
+              $title_anchor = anchor_popup(site_url('share/detail/'.$trade['item_id'] . '?display=1') , $trade['item_title'] );
               $owner_anchor = anchor_popup(site_url('#') , $trade['owner_name'] );
               ?>
               <!-- title -->
               <h4><?php echo $title_anchor;?></h4>
               <p><?php echo $owner_anchor;?> : <span><?php echo $trade['item_description'];?></span></p>
-              <p><?php echo $trade['create_time'];?> : You sent <?php echo $owner_anchor;?> a request for this book . </p>
-              
+              <div id="trade_record">
+              <?php 
+              foreach ($trade['trade_record'] as $key => $record) {?>
+                 <p><?php echo $record['create_time'];?> : 
+                  <?php if($record['op'] == 1){
+                    echo 'You sent ' . $owner_anchor . ' a request for this book .';
+                   }else if($record['op'] == 2){ 
+                    echo 'The onwer accepted your request .';
+                   }else if($record['op'] == 3){ 
+                    echo 'The onwer denied your request .'; 
+                   }else if($record['op'] == 4){ 
+                    echo 'You cancelled the request .'; 
+                   }else if($record['op'] == 5){ 
+                    echo 'The onwer confirm the book is returned .';
+                   }else if($record['op'] == 6){ 
+                    echo 'The onwer confirm the book is lost .';
+                   } ?>
+                 </p>
+              <?php } ?>
+              </div>
+
               <?php if($trade['trade_status'] == 1){ //accept or deny?>
                 <p>The owner has not responsed yet , you can cancel the request .</p>
                 <p>
@@ -46,7 +65,6 @@
               <?php }else{?>
                 <p>Sytem error.</p>
               <?php }?>
-
 
             </div>
             <div class="span1">

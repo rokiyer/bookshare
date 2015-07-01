@@ -51,8 +51,16 @@ class Share_model extends CI_Model{
            'status' => 1
         );
         $this->db->insert('trade', $data); 
+        $trade_id = $this->db->insert_id();
         $this->updateItem($item_id , array('status' => 4));
-        return $this->db->insert_id();
+
+        $record_insert_arr = array(
+			'trade_id' => $trade_id ,
+			'op' => 1	
+			);
+		$this->db->insert('trade_record' , $record_insert_arr );
+
+        return $trade_id;
 	}
 
 	function getTradeStatus($trade_id){
@@ -91,6 +99,13 @@ class Share_model extends CI_Model{
 			$item_id = $row->item_id;
 			$this->db->query("UPDATE item SET status = 3 WHERE id = $item_id");// 3 - delete
 		}
+
+		//DO THE RECORD
+		$record_insert_arr = array(
+			'trade_id' => $trade_id ,
+			'op' => $data['status']
+			);
+		$this->db->insert('trade_record' , $record_insert_arr );
 
 		return TRUE;
 	}

@@ -1,7 +1,6 @@
 <div class="row">
+   <div class="span8 alert alert-error hide" id="msg-box"></div>
    <div class="span6">
-    <div class="alert alert-error hide" id="msg-box"></div>
-    
     <ul class="nav nav-pills">
       <li><a href="<?php echo site_url($link_time);?>"><?php if($search_data['order_time']){echo 'Oldest';}else{echo 'Newest';}?></a></li>
       <li><a href="<?php echo site_url($link_name);?>"><?php if($search_data['order_name']){echo 'Z-A';}else{echo 'A-Z';}?></a></li>

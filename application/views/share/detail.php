@@ -7,9 +7,21 @@
         <div class="thumbnail">
           <div class="row">
             <a href="" class="span2">
-            <img class="book_image" src="<?php echo $item['image_url'];?>" >
-            <span class="label label-success share_status">Sharing</span>
+              <img class="book_image" src="<?php echo $item['image_url'];?>" >
+              <span class="label label-success share_status">
+                <?php if($item['item_status'] == 1){
+                  echo 'sharing';
+                }else if($item['item_status'] == 2){
+                  echo 'unshare';
+                }else if($item['item_status'] == 3){
+                  echo 'deleted';
+                }else if($item['item_status'] == 4){
+                  echo 'borrowed';
+                }
+                ?>
+              </span>
             </a>
+            
             <span id="item_id" item_id="<?php echo $item['item_id'];?>"></span>
             <div class="span6">
               <?php
@@ -36,32 +48,35 @@
               foreach ($authors_anchor as $key => $author_anchor) {
                 echo "<span>" . $author_anchor . "</span>";
                 if($key != count($authors_anchor) - 1 )
-                   echo " | ";
+                   echo " , ";
               }
               ?>
               <?php 
-              if(!empty($translators_anchor)) echo " | ";
+              if(!empty($translators_anchor)) echo " , ";
               foreach ($translators_anchor as $key => $translator_anchor) {
-                echo "<span>" . $translator_anchor .  "(Translate)</span>";
+                echo "<span>*" . $translator_anchor .  "</span>";
                 if($key != count($translators_anchor) - 1 )
-                   echo " | ";
+                   echo " , ";
               }
               ?>
               </p>
               <!-- publihser -->
-              <p><span><?php echo $publisher_anchor;?></span> | <span><?php echo $item['pubdate'];?></span></p>
+              <p><span><?php echo $publisher_anchor;?></span>  <span><?php echo $item['pubdate'];?></span></p>
               <!-- book owner infomation  -->
               <p><?php echo $user_anchor;?>  : <?php echo $item['description'];?></p>
               <!-- change book -->
               <hr>
-              <p>This book's owner is <?php echo $user_anchor;?> .<br> You can request him/her for borrowing this book.</p>
               <p>
-                <?php if(isLogin()){ ?>
-                  <?php if( $item['user_id'] != $this->session->userdata('user_id') ){ ?>
-                <button class="btn btn-primary" id="request" type="button">Request for Borrowing </button>
-                  <?php } ?>
+                <?php if($this->session->userdata('user_id') == FALSE){?>
+                  <p>This book's owner is <?php echo $user_anchor;?> .<br> You can request him/her for borrowing this book.</p>
+                  <a class="btn btn-primary" href="<?php echo site_url('user/login');?>" type="button">Request for Borrowing </a>
+                <?php }else if($item['user_id'] != $this->session->userdata('user_id') AND $item['item_status'] == 1){?>
+                  <p>This book's owner is <?php echo $user_anchor;?> .<br> You can request him/her for borrowing this book.</p>
+                  <button class="btn btn-primary" id="request" type="button">Request for Borrowing </button>
                 <?php }else{ ?>
-                <a class="btn btn-primary" href="<?php echo site_url('user/login');?>" type="button">Request for Borrowing </a>
+                  <p>This book is not available for you now . The reasons might be :</p>
+                  <p> * You are the owner of the book .</p>
+                  <p> * The status of the book is not sharing .</p>
                 <?php } ?>
               </p>
             </div>

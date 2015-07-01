@@ -151,7 +151,7 @@ class Space extends CI_Controller {
 
 	public function shared(){
 		$offset = $this->input->get_post('offset');
-		$limit = 4;
+		$limit = $this->limit;
 
 		$data = array();
 		$data['title'] = "Books on sharing" ;
@@ -162,7 +162,10 @@ class Space extends CI_Controller {
 
 		list( $data['total'] , $data['trades']) = $this->query_model->queryTrade( $data['search_data'] , $limit , $offset );
 
-		//页码导航
+		foreach ($data['trades'] as $key => $trade) {
+			$data['trades'][$key]['trade_record'] = $this->query_model->queryTradeRecord($trade['trade_id']);
+		}
+
 		$link_config = array(
 			'total' => $data['total'],
 			'offset' => $offset,
@@ -181,7 +184,7 @@ class Space extends CI_Controller {
 
 	public function borrow(){
 		$offset = $this->input->get_post('offset');
-		$limit = 4;
+		$limit = $this->limit;
 
 		$data = array();
 		$data['title'] = "Books on sharing" ;
@@ -192,7 +195,10 @@ class Space extends CI_Controller {
 
 		list( $data['total'] , $data['trades']) = $this->query_model->queryTrade( $data['search_data'] , $limit , $offset );
 
-		//页码导航
+		foreach ($data['trades'] as $key => $trade) {
+			$data['trades'][$key]['trade_record'] = $this->query_model->queryTradeRecord($trade['trade_id']);
+		}
+
 		$link_config = array(
 			'total' => $data['total'],
 			'offset' => $offset,

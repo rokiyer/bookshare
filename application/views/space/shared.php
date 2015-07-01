@@ -19,7 +19,27 @@
               <h4><?php echo $title_anchor;?></h4>
               <!-- book owner infomation  -->
               <p>My description :  <span><?php echo $trade['item_description'];?></span></p>
-              <p><?php echo $trade['create_time'];?> : <?php echo $borrower_anchor;?> wants to borrow this book . </p>
+              <!-- trade_record -->
+              <div id="trade_record">
+              <?php 
+              foreach ($trade['trade_record'] as $key => $record) {?>
+                 <p><?php echo $record['create_time'];?> : 
+                  <?php if($record['op'] == 1){
+                    echo $borrower_anchor .' sent you a request for this book .';
+                   }else if($record['op'] == 2){ 
+                    echo 'You accepted the request .';
+                   }else if($record['op'] == 3){ 
+                    echo 'You denied the request .'; 
+                   }else if($record['op'] == 4){ 
+                    echo 'The borrower cancelled the request .'; 
+                   }else if($record['op'] == 5){ 
+                    echo 'You confirm the book is returned .';
+                   }else if($record['op'] == 6){ 
+                    echo 'You confirm the book is lost .';
+                   } ?>
+                 </p>
+              <?php } ?>
+              </div>
               <!-- change book -->
               
               <?php if($trade['trade_status'] == 1){ //accept or deny?>
