@@ -17,15 +17,19 @@ class Share extends CI_Controller {
 	}
 
 	public function book(){
-		$offset = $this->input->get_post('offset');
-		$limit = 5;
-
+		
 		$data = array();
 		$data['title'] = "Books on sharing" ;
+		$data['page'] = __FUNCTION__;
 		$data['search_data'] = array(
 			'keyword' => $this->input->get_post('keyword'),
-			'item_status' => array(1)
+			'item_status' => array(1) , 
+			'order_time' => $this->input->get_post('order_time'),
+			'order_name' => $this->input->get_post('order_name'),
 		);
+
+		$offset = $this->input->get_post('offset');
+		$limit = $this->limit;
 		
 		list( $data['total'] , $data['items']) = $this->query_model->queryItem( $data['search_data'] , $limit , $offset );
 
@@ -47,9 +51,13 @@ class Share extends CI_Controller {
 		$this->load->model("pagination_model");
 		$data['link_array'] = $this->pagination_model->create_link($link_config);
 
+		$data['link_time'] = url_maker( $data['search_data'] , 'share/' . __FUNCTION__  , 
+			array('name'=>'order_time','value'=>(1-$data['search_data']['order_time']) ));
+		$data['link_name'] = url_maker( $data['search_data'] , 'share/' . __FUNCTION__  , 
+			array('name'=>'order_name','value'=>(1-$data['search_data']['order_name']) ));
 
 		$this->load->view('include/header' , $data);
-		$this->load->view('share/book');
+		$this->load->view('share/list');
 		$this->load->view('include/footer');
 	}
 
@@ -82,6 +90,7 @@ class Share extends CI_Controller {
 	public function user(){
 
 		$user_id = $this->input->get_post('user_id');
+		$keyword = $this->input->get_post('keyword');
 		$user_id = trim($user_id);
 		if(empty($user_id)){
 			redirect('share/error/1');
@@ -105,7 +114,10 @@ class Share extends CI_Controller {
 		$data['title'] = "Books on sharing" ;
 		$data['search_data'] = array(
 			'item_status' => array(1) ,
-			'user_id' => $user_id
+			'user_id' => $user_id , 
+			'keyword' => $keyword ,
+			'order_time' => $this->input->get_post('order_time'),
+			'order_name' => $this->input->get_post('order_name'),
 		);
 		
 		list( $data['total'] , $data['items']) = $this->query_model->queryItem( $data['search_data'] , $limit , $offset );
@@ -128,6 +140,11 @@ class Share extends CI_Controller {
 		$this->load->model("pagination_model");
 		$data['link_array'] = $this->pagination_model->create_link($link_config);
 
+		$data['link_time'] = url_maker( $data['search_data'] , 'share/' . __FUNCTION__  , 
+			array('name'=>'order_time','value'=>(1-$data['search_data']['order_time']) ));
+		$data['link_name'] = url_maker( $data['search_data'] , 'share/' . __FUNCTION__  , 
+			array('name'=>'order_name','value'=>(1-$data['search_data']['order_name']) ));
+
 
 		$this->load->view('include/header' , $data);
 		$this->load->view('share/list');
@@ -136,6 +153,7 @@ class Share extends CI_Controller {
 
 	public function author(){
 		$author_id = $this->input->get_post("author_id");
+		$keyword = $this->input->get_post("keyword");
 
 		$author_id = trim($author_id);
 		if(empty($author_id)){
@@ -170,7 +188,10 @@ class Share extends CI_Controller {
 		$data['search_data'] = array(
 			'item_status' => array(1) ,
 			'author_id' => $author_id ,
-			'book_ids' => $arr_book_ids
+			'book_ids' => $arr_book_ids ,
+			'keyword' => $keyword ,
+			'order_time' => $this->input->get_post('order_time'),
+			'order_name' => $this->input->get_post('order_name'),
 		);
 		
 		list( $data['total'] , $data['items']) = $this->query_model->queryItem( $data['search_data'] , $limit , $offset );
@@ -194,6 +215,11 @@ class Share extends CI_Controller {
 		$this->load->model("pagination_model");
 		$data['link_array'] = $this->pagination_model->create_link($link_config);
 
+		$data['link_time'] = url_maker( $data['search_data'] , 'share/' . __FUNCTION__  , 
+			array('name'=>'order_time','value'=>(1-$data['search_data']['order_time']) ));
+		$data['link_name'] = url_maker( $data['search_data'] , 'share/' . __FUNCTION__  , 
+			array('name'=>'order_name','value'=>(1-$data['search_data']['order_name']) ));
+
 
 		$this->load->view('include/header' , $data);
 		$this->load->view('share/list');
@@ -202,6 +228,7 @@ class Share extends CI_Controller {
 
 	public function publisher(){
 		$publisher_id = $this->input->get_post("publisher_id");
+		$keyword = $this->input->get_post("keyword");
 
 		$publisher_id = trim($publisher_id);
 		if(empty($publisher_id)){
@@ -227,7 +254,10 @@ class Share extends CI_Controller {
 		$data['title'] = "Books on sharing" ;
 		$data['search_data'] = array(
 			'item_status' => array(1) ,
-			'publisher_id' => $publisher_id 
+			'publisher_id' => $publisher_id ,
+			'keyword' => $keyword ,
+			'order_time' => $this->input->get_post('order_time'),
+			'order_name' => $this->input->get_post('order_name'),
 		);
 		
 		list( $data['total'] , $data['items']) = $this->query_model->queryItem( $data['search_data'] , $limit , $offset );
@@ -249,6 +279,11 @@ class Share extends CI_Controller {
 			);
 		$this->load->model("pagination_model");
 		$data['link_array'] = $this->pagination_model->create_link($link_config);
+
+		$data['link_time'] = url_maker( $data['search_data'] , 'share/' . __FUNCTION__  , 
+			array('name'=>'order_time','value'=>(1-$data['search_data']['order_time']) ));
+		$data['link_name'] = url_maker( $data['search_data'] , 'share/' . __FUNCTION__  , 
+			array('name'=>'order_name','value'=>(1-$data['search_data']['order_name']) ));
 
 
 		$this->load->view('include/header' , $data);
@@ -272,6 +307,16 @@ class Share extends CI_Controller {
 		$this->load->view('share/error');
 		$this->load->view('include/footer');
 
+	}
+
+	private function url_maker($search_data , $pre_url , $order )
+	{
+		foreach ($search_data as $key => $value) {
+			if(empty($value))
+				unset($search_data[$key]);
+		}
+		$search_data[$order['name']] = $order['value'];
+		return $pre_url.'?'.http_build_query($search_data);
 	}
 
 	

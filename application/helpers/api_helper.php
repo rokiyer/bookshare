@@ -71,3 +71,13 @@ function addLimit( $limit , $offset )
 	else
 		return " LIMIT 0 , 10 " ;
 }
+
+function url_maker($search_data , $pre_url , $order )
+{
+	foreach ($search_data as $key => $value) {
+		if(empty($value))
+			unset($search_data[$key]);
+	}
+	$search_data[$order['name']] = $order['value'];
+	return $pre_url.'?'.http_build_query($search_data);
+}

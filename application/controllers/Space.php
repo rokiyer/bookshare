@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Space extends CI_Controller {
 
 	private $user_id;
+	private $limit = 4;
 
 	function __construct(){
 		parent::__construct();
@@ -87,14 +88,16 @@ class Space extends CI_Controller {
 	public function items()
 	{
 		$offset = $this->input->get_post('offset');
-		$limit = 4;
+		$limit = $this->limit;
 
 		$data = array();
 		$data['title'] = "Books on sharing" ;
 		$data['search_data'] = array(
 			'keyword' => $this->input->get_post('keyword'),
 			'item_status' => array(1,2) ,
-			'user_id' => $this->session->userdata['user_id']
+			'user_id' => $this->session->userdata['user_id'] ,
+			'order_time' => $this->input->get_post('order_time'),
+			'order_name' => $this->input->get_post('order_name'),
 		);
 
 		list( $data['total'] , $data['items']) = $this->query_model->queryItem( $data['search_data'] , $limit , $offset );
@@ -107,7 +110,11 @@ class Space extends CI_Controller {
 
 		unset($data['search_data']['item_status']);
 
-		//页码导航
+		$data['link_time'] = url_maker( $data['search_data'] , 'space/' . __FUNCTION__  , 
+			array('name'=>'order_time','value'=>(1-$data['search_data']['order_time']) ));
+		$data['link_name'] = url_maker( $data['search_data'] , 'space/' . __FUNCTION__  , 
+			array('name'=>'order_name','value'=>(1-$data['search_data']['order_name']) ));
+
 		$link_config = array(
 			'total' => $data['total'],
 			'offset' => $offset,

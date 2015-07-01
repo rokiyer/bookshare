@@ -16,6 +16,8 @@ class Query_model extends CI_Model{
 		$author_id = isset($search_data['author_id'])?$search_data['author_id']:NULL;
 		$publisher_id = isset($search_data['publisher_id'])?$search_data['publisher_id']:NULL;
 		$book_ids = isset($search_data['book_ids'])?$search_data['book_ids']:NULL;
+		$order_time = isset($search_data['order_time'])?$search_data['order_time']:NULL;
+		$order_name = isset($search_data['order_name'])?$search_data['order_name']:NULL;
 
 		$sql = "SELECT * FROM item_view 
 			WHERE 1 ";
@@ -31,7 +33,7 @@ class Query_model extends CI_Model{
 		}
 
 		if($keyword != NULL)
-			$sql .= "AND book.title LIKE '%$keyword%' ";
+			$sql .= "AND item_view.title LIKE '%$keyword%' ";
 		
 		if($item_id != NULL)
 			$sql .= "AND item_view.item_id = $item_id ";
@@ -42,12 +44,17 @@ class Query_model extends CI_Model{
 		if($publisher_id != NULL)
 			$sql .= "AND item_view.publisher_id = $publisher_id ";
 
-		
-
 		$query_total = $this->db->query($sql);
 		$total = $query_total->num_rows();
+		if($order_time == 1 AND $order_name == 1)
+			$sql .= " ORDER BY create_time ASC , title DESC";
+		else if($order_time == 1)
+			$sql .= " ORDER BY create_time ASC , title ASC";
+		else if($order_name == 1)
+			$sql .= " ORDER BY create_time DESC , title DESC";
+		else
+			$sql .= " ORDER BY create_time DESC , title ASC";
 
-		$sql .= " ORDER BY create_time DESC";
 		$sql .= addLimit( $limit , $offset );
 		
 

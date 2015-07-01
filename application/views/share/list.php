@@ -1,14 +1,40 @@
 <div class="row">
+
+
    <div class="span9">
-    <div class="alert alert-info">
+    
       <?php if($page == 'user'){ ?>
+      <div class="alert alert-info">
         The books in this page are owned by <b><?php echo anchor('share/user/' . $user['id'] , $user['username']);?></b> 
       , you can borrow multiple books from him/her.
+      </div>
       <?php }else if($page == 'author'){ ?>
+      <div class="alert alert-info">
         The books in this page are wrote by <b><?php echo anchor('share/author?author_id=' . $author['id'] , $author['name']);?></b> 
+      </div>
       <?php }else if($page == 'publisher'){ ?>
+      <div class="alert alert-info">
         The books in this page are published by <b><?php echo anchor('share/publisher?publisher_id=' . $publisher['id'] , $publisher['name']);?></b> 
+      </div>
       <?php } ?>
+    
+   </div>
+   <div class="span6">
+    <ul class="nav nav-pills">
+      <li><a href="<?php echo site_url($link_time);?>"><?php if($search_data['order_time']){echo 'Oldest';}else{echo 'Newest';}?></a></li>
+      <li><a href="<?php echo site_url($link_name);?>"><?php if($search_data['order_name']){echo 'Z-A';}else{echo 'A-Z';}?></a></li>
+    </ul>
+   </div>
+
+   <div class="span3">
+    <div class="input-append">
+      <form action="<?php echo site_url('share/' . $page  );?>" method="get" >
+      <input class="span2" type="text" name="keyword" value="<?php echo $search_data['keyword'];?>">
+      <?php if($page != 'book'){?>
+      <input class="hide" name="<?php echo $page.'_id';?>" value="<?php echo $search_data[$page.'_id'];?>">
+      <?php }?>
+      <button class="btn" name="submit" type="submit" >Search</button>
+      </form>
     </div>
    </div>
 
