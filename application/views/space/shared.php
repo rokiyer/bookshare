@@ -1,6 +1,9 @@
 <div class="row">
   <div class="span9">
     <div class="alert alert-error hide" id="msg-box"></div>
+    <?php if(empty($trades)){ ?>
+    <div class="alert alert-info" id="msg-box">None of your books has been borrowed yet.</div>
+    <?php } ?>
     <ul class="thumbnails">
       <?php 
       foreach ($trades as $key => $trade) { ?>

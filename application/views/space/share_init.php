@@ -1,4 +1,7 @@
 <div class="row">
+ <div class="span3">
+  	
+  </div>
   <div class="span3">
     <div class="alert alert-error <?php if($msg != 2) echo 'hide';?>" id="msg-box"><?php if($msg == 2) echo 'Can not find the ISBN';?></div>
 	<form class="form" method='get' action="">
@@ -8,11 +11,8 @@
 	    <button class="btn btn-primary btn-block" id="submit" name="submit" type="submit" value="1">Find Book</button>
 	</form>
   </div>
-  <div class="span6">
-  	<div class="hero-unit">
-		<h3></h3>
-		<p></p>
-	</div>
+  <div class="span3">
+  	
   </div>
 </div>
 

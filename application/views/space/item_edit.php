@@ -13,19 +13,21 @@
             <span id="item_id" item_id="<?php echo $item['item_id'];?>"></span>
             <div class="span5">
               <?php
-              $title_anchor = anchor_popup(site_url('item/detail/'.$item['item_id']) , $item['title'] );
+              $title_anchor = anchor_popup(site_url('share/detail/'.$item['item_id']) , $item['title'] );
               $authors_anchor = array();
               foreach ($item['authors'] as $key => $author) {
-                $author_anchor = anchor_popup(site_url('#') , $author['name']);
+                $author_anchor = anchor_popup(site_url('share/author?author_id='.$author['author_id']) , $author['name']);
                 array_push($authors_anchor, $author_anchor);
               }
               $translators_anchor = array();
               foreach ($item['translators'] as $key => $translator) {
-                $translator_anchor = anchor_popup(site_url('#') , $translator['name']);
+                $translator_anchor = anchor_popup(site_url('share/author?author_id='.$translator['translator_id']) , $translator['name']);
                 array_push($translators_anchor, $translator_anchor);
               }
-              $publisher_anchor = anchor_popup(site_url('#') , $item['publisher_name'] );
-              $user_anchor = anchor_popup(site_url('#') , $item['username'] );
+              if($item['publisher_name'] == NULL )
+                $item['publisher_name'] = "Unknown";
+              $publisher_anchor = anchor_popup( site_url('share/publisher?publisher_id='.$item['publisher_id']) , $item['publisher_name'] );
+              $user_anchor = anchor_popup(site_url('share/user?user_id='.$item['user_id']) , $item['username'] );
               ?>
 
               <!-- title -->
@@ -36,15 +38,15 @@
               foreach ($authors_anchor as $key => $author_anchor) {
                 echo "<span>" . $author_anchor . "</span>";
                 if($key != count($authors_anchor) - 1 )
-                   echo " | ";
+                   echo " , ";
               }
               ?>
               <?php 
-              if(!empty($translators_anchor)) echo " | ";
+              if(!empty($translators_anchor)) echo " , ";
               foreach ($translators_anchor as $key => $translator_anchor) {
-                echo "<span>" . $translator_anchor .  "(Translate)</span>";
+                echo "<span>*" . $translator_anchor .  "</span>";
                 if($key != count($translators_anchor) - 1 )
-                   echo " | ";
+                   echo " , ";
               }
               ?>
               </p>

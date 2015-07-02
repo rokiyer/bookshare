@@ -13,6 +13,7 @@ class Space extends CI_Controller {
 		}
 
 		$this->user_id = $this->session->userdata('user_id');
+		$this->load->model('user_model');
 	}
 
 	public function index()
@@ -23,7 +24,6 @@ class Space extends CI_Controller {
 
 	public function profile()
 	{
-		$this->load->model('user_model');
 		$user_info = $this->user_model->getUserInfo($this->user_id);
 
 		$user_info['create_time'] = date("Y-m-d" , strtotime($user_info['create_time']) );
@@ -37,21 +37,42 @@ class Space extends CI_Controller {
 
 	public function profile_edit()
 	{
-		$this->load->model('user_model');
 		$user_info = $this->user_model->getUserInfo($this->user_id);
 
 		$user_info['create_time'] = date("Y-m-d" , strtotime($user_info['create_time']) );
 		$user_info['user_id'] = $user_info['id'];
 
 		$this->load->view('include/header' , $user_info);
-		$this->load->view('space/nav');
 		$this->load->view('space/profile_edit');
 		$this->load->view('include/footer');
 	}
 
+	public function profile_pwd(){
+
+		$result = 0;
+
+		if($this->input->get_post("submit")){
+			$input = array(
+				'cpwd' => $this->input->get_post('cpwd'),
+				'npwd1' => $this->input->get_post('npwd1'),
+				'npwd2' => $this->input->get_post('npwd2'),
+			);
+
+			$result = $this->user_model->changePwd($input , $this->user_id);
+		}
+
+		$data = array(
+			'result' => $result 
+			);
+		
+		$this->load->view('include/header' , $data);
+		$this->load->view('space/profile_pwd');
+		$this->load->view('include/footer');
+
+	}
+
 	public function display()
 	{
-		$this->load->model('user_model');
 		$user_books = $this->user_model->getuserBooks($this->user_id);
 
 		$this->load->view('include/header' , $user_books);

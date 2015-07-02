@@ -105,5 +105,27 @@ class User_model extends CI_Model{
 		$this->db->update('user', $data); 
 		return TRUE;
 	}
+
+	public function changePwd($input , $user_id){
+		$cpwd = $input['cpwd'];
+		$npwd1 = $input['npwd1'];
+		$npwd2 = $input['npwd2'];
+
+		if(empty($cpwd) OR empty($npwd1) OR empty($npwd2) )
+			return 1;
+
+		if($npwd1 != $npwd2)
+			return 2;
+
+		if($npwd1 == $cpwd)
+			return 3;
+
+		$query_user = $this->db->query("SELECT * FROM user WHERE id=$user_id AND password=SHA1('$cpwd')");
+		if($query_user->num_rows() == 0)
+			return 4;
+
+		$update_pwd = $this->db->query("UPDATE user SET password=SHA1('$npwd1') WHERE id=$user_id");
+		return 5;
+	}
 }
 

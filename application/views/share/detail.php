@@ -25,7 +25,7 @@
             <span id="item_id" item_id="<?php echo $item['item_id'];?>"></span>
             <div class="span6">
               <?php
-              $title_anchor = anchor_popup(site_url('item/detail/'.$item['item_id']) , $item['title'] );
+              $title_anchor = anchor_popup(site_url('share/detail/'.$item['item_id']) , $item['title'] );
               $authors_anchor = array();
               foreach ($item['authors'] as $key => $author) {
                 $author_anchor = anchor_popup( site_url('share/author?author_id=' . $author['author_id']) , $author['name']);
