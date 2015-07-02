@@ -1,9 +1,10 @@
 <div class="row">
   <div class="span9">
-    <h3>User List</h3>
+    <h3>Item List</h3>
         <form action="" method="GET" class="form-inline">
-        <input type="text" class="form-control" name="keyword" value="<?php echo $search_data['keyword'];?>">
-       
+        <input type="text" class="form-control" name="keyword" placeholder="keyword" value="<?php if(isset($search_data['keyword'])){echo $search_data['keyword'];}?>">
+        <input type="text" class="form-control" name="username" placeholder="owner name" value="<?php if(isset($search_data['username'])){echo $search_data['username'];}?>">
+
         <button class="btn btn-success" type="submit" >Search</button>
         <a class="btn btn-primary" href="<?php echo site_url('admin/' . $self );?>"/>Reset</a>
         <a class="btn btn-primary" href="<?php echo site_url('admin');?>"/>Return</a>
@@ -14,19 +15,23 @@
     <table class="table table-bordered">
       <tr>
         <th>ID</th>
-        <th>username</th>
-        <th>cellphone</th>
-        <th>email</th>
+        <th>title</th>
+        <th>owner</th>
+        <th>publisher</th>
+        <th>status</th>
         <th>create time</th>
       </tr>
       <?php
-      foreach ($users as $key => $user) {
+      
+      foreach ($items as $key => $item) {
+
         echo "<tr>";
-        echo "<td>" . $user['id'] . "</td>";
-        echo "<td>" . $user['username'] . "</td>";
-        echo "<td>" . $user['cellphone'] . "</td>";
-        echo "<td>" . $user['email'] . "</td>";
-        echo "<td>" . $user['create_time'] . "</td>";
+        echo "<td>" . $item['item_id'] . "</td>";
+        echo "<td>" . $item['title'] . "</td>";
+        echo "<td>" . $item['username'] . "</td>";
+        echo "<td>" . $item['publisher_name'] . "</td>";
+        echo "<td>" . getItemStatusName($item['item_status']) . "</td>";
+        echo "<td>" . $item['create_time'] . "</td>";
         echo "</tr>";
       }
       ?>

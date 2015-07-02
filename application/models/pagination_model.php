@@ -52,11 +52,12 @@ class Pagination_model extends CI_Model
 
 	private function initialize($config) {
 		$this->total = $config['total'];
-		$this->offset = $config['offset'];
+		$this->offset = isset($config['offset'])?$config['offset']:0;
 		$this->search_data = $config['search_data'];
 		$this->pre_url = $config['pre_url'];
 		$this->limit = isset($config['limit'])?$config['limit']:10;
 		$this->num_page = isset($config['limit'])?$config['limit']:4;
+
 	}
 
 	private function url_maker($offset)

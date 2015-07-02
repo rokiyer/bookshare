@@ -19,6 +19,9 @@ class Query_model extends CI_Model{
 		$order_time = isset($search_data['order_time'])?$search_data['order_time']:NULL;
 		$order_name = isset($search_data['order_name'])?$search_data['order_name']:NULL;
 
+		$start_time = isset($search_data['start_time'])?$search_data['start_time']:NULL;
+		$end_time = isset($search_data['end_time'])?$search_data['end_time']:NULL;
+
 		$sql = "SELECT * FROM item_view 
 			WHERE 1 ";
 
@@ -44,6 +47,13 @@ class Query_model extends CI_Model{
 		if($publisher_id != NULL)
 			$sql .= "AND item_view.publisher_id = $publisher_id ";
 
+		if($start_time != NULL AND $end_time != NULL){
+			$sql .= " AND create_time  > '$start_time' AND create_time < '$end_time' ";
+		}else if($start_time != NULL){
+			$sql .= " AND create_time > '$start_time' ";
+		}else if($start_time != NULL){
+			$sql .= " AND create_time < '$end_time' ";
+		}
 		$query_total = $this->db->query($sql);
 		$total = $query_total->num_rows();
 		if($order_time == 1 AND $order_name == 1)
@@ -51,9 +61,53 @@ class Query_model extends CI_Model{
 		else if($order_time == 1)
 			$sql .= " ORDER BY create_time ASC , title ASC";
 		else if($order_name == 1)
-			$sql .= " ORDER BY create_time DESC , title DESC";
+			$sql .= " ORDER BY title DESC , create_time DESC ";
 		else
 			$sql .= " ORDER BY create_time DESC , title ASC";
+
+		$sql .= addLimit( $limit , $offset );
+
+		$query_search = $this->db->query($sql);
+		$result_search = $query_search->result_array();
+
+		return array($total , $result_search);
+	}
+
+	function queryUser($search_data , $limit = NULL, $offset = NULL ){
+
+		$keyword = isset($search_data['keyword'])?$search_data['keyword']:NULL;
+		$cellphone = isset($search_data['cellphone'])?$search_data['cellphone']:NULL;
+		$email = isset($search_data['email'])?$search_data['email']:NULL;
+		$username = isset($search_data['username'])?$search_data['username']:NULL;
+		$start_time = isset($search_data['start_time'])?$search_data['start_time']:NULL;
+		$end_time = isset($search_data['end_time'])?$search_data['end_time']:NULL;
+
+		// $start_time = date('Y-m-d H:i:s' , strtotime($start_time));
+		// $end_time = date('Y-m-d H:i:s' , strtotime($end_time));
+		
+		$sql = "SELECT * FROM user 
+			WHERE 1 ";
+
+		if($keyword != NULL)
+			$sql .= "AND (cellphone LIKE '%$keyword%' OR cellphone LIKE '%$keyword%' 
+		OR email LIKE '%$keyword%' OR username LIKE '%$keyword%' )";
+
+		if($cellphone != NULL)
+			$sql .= "AND user LIKE '%$cellphone%' ";
+
+		if($username != NULL)
+			$sql .= "AND user LIKE '%$username%' ";
+
+		if($start_time != NULL AND $end_time != NULL){
+			$sql .= " AND create_time  > '$start_time' AND create_time < '$end_time' ";
+		}else if($start_time != NULL){
+			$sql .= " AND create_time > '$start_time' ";
+		}else if($start_time != NULL){
+			$sql .= " AND create_time < '$end_time' ";
+		}
+
+		$query_total = $this->db->query($sql);
+		$total = $query_total->num_rows();
 
 		$sql .= addLimit( $limit , $offset );
 		
@@ -138,13 +192,12 @@ class Query_model extends CI_Model{
 
 	function queryTrade($search_data , $limit = NULL, $offset = NULL ){
 
-		$keyword = isset($search_data['keyword'])?$search_data['keyword']:NULL;
-		$item_id = isset($search_data['item_id'])?$search_data['item_id']:NULL;
+		$item_title = isset($search_data['item_title'])?$search_data['item_title']:NULL;
 		$item_status = isset($search_data['item_status'])?$search_data['item_status']:NULL;
 		$trade_status = isset($search_data['trade_status'])?$search_data['trade_status']:NULL;
 		$owner_id = isset($search_data['owner_id'])?$search_data['owner_id']:NULL;
 		$borrower_id = isset($search_data['borrower_id'])?$search_data['borrower_id']:NULL;
-		$onwer_name = isset($search_data['onwer_name'])?$search_data['onwer_name']:NULL;
+		$owner_name = isset($search_data['owner_name'])?$search_data['owner_name']:NULL;
 		$borrower_name = isset($search_data['borrower_name'])?$search_data['borrower_name']:NULL;
 
 		$sql = "SELECT * FROM trade_view
@@ -157,7 +210,13 @@ class Query_model extends CI_Model{
 		if(!empty($borrower_id))
 			$sql .= " AND borrower_id = $borrower_id";
 		if(!empty($trade_status))
-			$sql .= " AND trade_id = $trade_id";
+			$sql .= " AND trade_status IN (" . implode(',', $trade_status) . ") ";
+		if(!empty($borrower_name))
+			$sql .= " AND borrower_name LIKE '%$borrower_name%' ";
+		if(!empty($owner_name))
+			$sql .= " AND owner_name LIKE '%$owner_name%' ";
+		if(!empty($item_title))
+			$sql .= " AND item_title LIKE '%$item_title%' ";
 
 		$query_total = $this->db->query($sql);
 		$total = $query_total->num_rows();

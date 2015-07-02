@@ -9,7 +9,7 @@ class Share extends CI_Controller {
 		parent::__construct();
 		$this->load->model("share_model");
 	}
-
+	
 	public function index()
 	{
 		redirect('share/book');
