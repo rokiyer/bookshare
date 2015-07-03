@@ -30,6 +30,11 @@ class Share extends CI_Controller {
 
 		$offset = $this->input->get_post('offset');
 		$limit = $this->limit;
+
+		if($this->session->userdata('user_id')){
+			$user_id = $this->session->userdata('user_id');
+			$data['search_data']['no_user_id'] = $user_id;
+		}
 		
 		list( $data['total'] , $data['items']) = $this->query_model->queryItem( $data['search_data'] , $limit , $offset );
 
@@ -40,6 +45,7 @@ class Share extends CI_Controller {
 		}
 
 		unset($data['search_data']['item_status']);
+		unset($data['search_data']['no_user_id']);
 
 		$link_config = array(
 			'total' => $data['total'],

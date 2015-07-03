@@ -20,6 +20,8 @@ class Query_model extends CI_Model{
 		$order_time = isset($search_data['order_time'])?$search_data['order_time']:NULL;
 		$order_name = isset($search_data['order_name'])?$search_data['order_name']:NULL;
 
+		$no_user_id = isset($search_data['no_user_id'])?$search_data['no_user_id']:NULL;
+
 		$start_time = isset($search_data['start_time'])?$search_data['start_time']:NULL;
 		$end_time = isset($search_data['end_time'])?$search_data['end_time']:NULL;
 
@@ -47,6 +49,9 @@ class Query_model extends CI_Model{
 
 		if($user_id != NULL)
 			$sql .= "AND item_view.user_id = $user_id ";
+
+		if($no_user_id != NULL)
+			$sql .= "AND item_view.user_id != $no_user_id ";
 
 		if($publisher_id != NULL)
 			$sql .= "AND item_view.publisher_id = $publisher_id ";
