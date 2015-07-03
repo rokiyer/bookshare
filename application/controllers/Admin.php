@@ -114,6 +114,7 @@ class Admin extends CI_Controller {
 		$data = array();
 		$data['search_data'] = array(
 			'keyword' => $this->input->get_post('keyword'),
+			'username' => $this->input->get_post('username'),
 			'start_time' => $this->input->get_post('start_time'),
 			'end_time' => $this->input->get_post('end_time') ,
 			'item_status' => array(1,2,3,4)

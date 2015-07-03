@@ -13,11 +13,11 @@
 <div class="row-fluid marketing">
   <div class="span6">
 
-     <h4>Search</h4>
+     <h4><i class="icon-search"></i> Search</h4>
     <p>All the books are classified by author , publisher and owner with search box on each page . 
       Every book available is easy to find .</p>
 
-    <h4>Upload</h4>
+    <h4><i class="icon-upload"></i> Upload</h4>
     <p>Upload your idle books fast, do not need to fill all the details about the book ,
      only ISBN is needed .</p>
 
@@ -25,11 +25,11 @@
   </div>
 
   <div class="span6">
-    <h4>Management</h4>
+    <h4><i class="icon-eye-open"></i> Management</h4>
     <p>Friendly interface for you to manage your uploaded books . Errors and wrong operations are handled 
       elegantly with notice.</p>
 
-    <h4>Borrow</h4>
+    <h4><i class="icon-shopping-cart"></i> Borrow</h4>
     <p>Simple process to borrow and return books . Easy to manage contact infomation between owner and borrower.</p>
 
   </div>

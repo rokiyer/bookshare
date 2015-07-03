@@ -13,6 +13,7 @@ class Query_model extends CI_Model{
 		$item_id = isset($search_data['item_id'])?$search_data['item_id']:NULL;
 		$item_status = isset($search_data['item_status'])?$search_data['item_status']:NULL;
 		$user_id = isset($search_data['user_id'])?$search_data['user_id']:NULL;
+		$username = isset($search_data['username'])?$search_data['username']:NULL;
 		$author_id = isset($search_data['author_id'])?$search_data['author_id']:NULL;
 		$publisher_id = isset($search_data['publisher_id'])?$search_data['publisher_id']:NULL;
 		$book_ids = isset($search_data['book_ids'])?$search_data['book_ids']:NULL;
@@ -37,6 +38,9 @@ class Query_model extends CI_Model{
 
 		if($keyword != NULL)
 			$sql .= "AND item_view.title LIKE '%$keyword%' ";
+
+		if($username != NULL)
+			$sql .= "AND item_view.username LIKE '%$username%' ";
 		
 		if($item_id != NULL)
 			$sql .= "AND item_view.item_id = $item_id ";
